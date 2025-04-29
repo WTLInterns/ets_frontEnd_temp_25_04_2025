@@ -3,6 +3,11 @@
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import { FiTruck, FiClock, FiUsers, FiBarChart2 } from 'react-icons/fi';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement } from 'chart.js';
+import { Pie, Line, Bar } from 'react-chartjs-2';
+
+// Register ChartJS components
+ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement);
 
 // Lazy-loaded components with loading states
 const PageLayout = dynamic(() => import('@/components/layout/PageLayout'), {
@@ -11,6 +16,43 @@ const PageLayout = dynamic(() => import('@/components/layout/PageLayout'), {
 });
 
 const DashboardPage = () => {
+  // Chart data
+  const pieChartData = {
+    labels: ['Active Vehicles', 'Maintenance', 'Out of Service'],
+    datasets: [
+      {
+        data: [18, 4, 2],
+        backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+        borderColor: ['#388E3C', '#FFA000', '#D32F2F'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const lineChartData = {
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    datasets: [
+      {
+        label: 'Daily Trips',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        fill: false,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+
+  const barChartData = {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [
+      {
+        label: 'Revenue',
+        data: [12000, 19000, 15000, 25000, 22000, 30000],
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      },
+    ],
+  };
+
   return (
     <PageLayout title="Dashboard" isDashboard={true}>
       <div className="w-full max-w-7xl mx-auto">
@@ -62,6 +104,76 @@ const DashboardPage = () => {
                 <FiBarChart2 size={24} className="text-white fancy-icon" />
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-gray-900 rounded-lg shadow-lg p-6 border border-gray-800">
+            <h3 className="text-lg font-semibold mb-4 text-white">Vehicle Status Distribution</h3>
+            <div className="h-[300px] flex items-center justify-center">
+              <Pie data={pieChartData} options={{
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: {
+                      color: 'white'
+                    }
+                  }
+                }
+              }} />
+            </div>
+          </div>
+
+          <div className="bg-gray-900 rounded-lg shadow-lg p-6 border border-gray-800">
+            <h3 className="text-lg font-semibold mb-4 text-white">Weekly Trip Trends</h3>
+            <div className="h-[300px]">
+              <Line data={lineChartData} options={{
+                plugins: {
+                  legend: {
+                    labels: {
+                      color: 'white'
+                    }
+                  }
+                },
+                scales: {
+                  y: {
+                    ticks: { color: 'white' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                  },
+                  x: {
+                    ticks: { color: 'white' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                  }
+                }
+              }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Revenue Chart */}
+        <div className="bg-gray-900 rounded-lg shadow-lg p-6 border border-gray-800 mb-8">
+          <h3 className="text-lg font-semibold mb-4 text-white">Monthly Revenue Overview</h3>
+          <div className="h-[300px]">
+            <Bar data={barChartData} options={{
+              plugins: {
+                legend: {
+                  labels: {
+                    color: 'white'
+                  }
+                }
+              },
+              scales: {
+                y: {
+                  ticks: { color: 'white' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                x: {
+                  ticks: { color: 'white' },
+                  grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+              }
+            }} />
           </div>
         </div>
 

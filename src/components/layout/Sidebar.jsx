@@ -1,58 +1,66 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  FiGrid, 
-  FiUserPlus, 
-  FiUsers, 
-  FiTruck, 
-  FiPlusCircle, 
-  FiLink, 
-  FiUpload, 
-  FiSettings,
-  FiMenu,
-  FiChevronLeft,
-  FiChevronRight
+  FiGrid, FiUserPlus, FiUsers, FiTruck, FiPlusCircle, 
+  FiLink, FiUpload, FiSettings, FiMenu, FiChevronLeft, 
+  FiChevronRight, FiX
 } from 'react-icons/fi';
+import { useTheme } from './ThemeProvider';
 
 const Sidebar = () => {
   const pathname = usePathname();
   const [isExpanded, setIsExpanded] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const sidebarRef = useRef(null);
+  const { theme } = useTheme();
 
-  // Handle sidebar toggle
-  const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
-    // Dispatch custom event for other components to listen to
-    const event = new CustomEvent('sidebarChange', { 
-      detail: { expanded: !isExpanded } 
-    });
-    window.dispatchEvent(event);
-  };
+  // Check if we're on mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsExpanded(false);
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isMobile && isMobileMenuOpen && sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMobile, isMobileMenuOpen]);
 
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Handle mobile menu toggle
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded);
+    const event = new CustomEvent('sidebarChange', { 
+      detail: { expanded: !isExpanded } 
+    });
+    window.dispatchEvent(event);
+  };
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
-
-  // Check if we're on mobile
-  useEffect(() => {
-    const checkMobile = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Navigation items with fancy colorful icons
   const navItems = [
@@ -61,21 +69,21 @@ const Sidebar = () => {
       path: '/dashboard', 
       icon: <FiGrid className="text-purple-500 fancy-icon" size={20} /> 
     },
-    { 
-      name: 'Add Drivers', 
-      path: '/add-drivers', 
-      icon: <FiUserPlus className="text-green-500 fancy-icon" size={20} /> 
-    },
+    // { 
+    //   name: 'Add Drivers', 
+    //   path: '/add-drivers', 
+    //   icon: <FiUserPlus className="text-green-500 fancy-icon" size={20} /> 
+    // },
     { 
       name: 'Drivers', 
       path: '/drivers', 
       icon: <FiUsers className="text-cyan-500 fancy-icon" size={20} /> 
     },
-    { 
-      name: 'Add Vehicles', 
-      path: '/add-vehicles', 
-      icon: <FiPlusCircle className="text-pink-500 fancy-icon" size={20} /> 
-    },
+    // { 
+    //   name: 'Add Vehicles', 
+    //   path: '/add-vehicles', 
+    //   icon: <FiPlusCircle className="text-pink-500 fancy-icon" size={20} /> 
+    // },
     { 
       name: 'Vehicles', 
       path: '/vehicles', 
@@ -86,11 +94,11 @@ const Sidebar = () => {
       path: '/pairing-vehicle', 
       icon: <FiLink className="text-orange-500 fancy-icon" size={20} /> 
     },
-    { 
-      name: 'Add Employees', 
-      path: '/add-employees', 
-      icon: <FiUserPlus className="text-indigo-500 fancy-icon" size={20} /> 
-    },
+    // { 
+    //   name: 'Add Employees', 
+    //   path: '/add-employees', 
+    //   icon: <FiUserPlus className="text-indigo-500 fancy-icon" size={20} /> 
+    // },
     { 
       name: 'Employees', 
       path: '/employees', 
@@ -117,58 +125,73 @@ const Sidebar = () => {
     <>
       {/* Mobile Menu Toggle Button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-gray-800 text-white"
+        className={`md:hidden fixed top-4 left-4 z-50 p-2 rounded-md ${
+          theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+        } shadow-lg transition-transform ${isMobileMenuOpen ? 'transform translate-x-64' : ''}`}
         onClick={toggleMobileMenu}
         aria-label="Toggle mobile menu"
       >
-        <FiMenu size={24} />
+        {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
       </button>
 
       {/* Sidebar Overlay for Mobile */}
       {isMobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-30"
-          onClick={() => setIsMobileMenuOpen(false)}
+          className="md:hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-30 transition-opacity"
+          onClick={toggleMobileMenu}
         />
       )}
 
       {/* Sidebar */}
       <aside 
-        className={`sidebar fixed left-0 top-0 h-full transition-all duration-300 z-40
-                   ${isMobileMenuOpen ? 'w-64 translate-x-0' : isExpanded ? 'w-64' : 'w-16'} 
-                   ${isMobileMenuOpen ? 'translate-x-0' : !isExpanded && !isMobileMenuOpen ? 'translate-x-0' : 'translate-x-0'}`}
-        onClick={() => {
-          if (!isExpanded && !isMobileMenuOpen) {
-            toggleSidebar();
-          }
-        }}
+        ref={sidebarRef}
+        className={`fixed left-0 top-0 h-full transition-all duration-300 z-40 ${
+          theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
+        } ${isMobile 
+          ? `${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} w-64`
+          : `${isExpanded ? 'w-64' : 'w-16'}`
+        }
+        shadow-xl`}
       >
         {/* Logo Area */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-800">
-          {(isExpanded || isMobileMenuOpen) && (
+        <div className={`h-16 flex items-center justify-between px-4 border-b ${
+          theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
+        }`}>
+          {(isExpanded || isMobileMenuOpen) ? (
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-xl">
                 ETS
               </div>
-              <span className="ml-3 text-white font-bold text-xl">ETS</span>
+              <span className={`ml-3 font-bold text-xl ${
+                theme === 'dark' ? 'text-white' : 'text-gray-900'
+              }`}>ETS</span>
             </div>
+          ) : (
+            !isMobile && (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-xl mx-auto">
+                E
+              </div>
+            )
           )}
           
           {/* Toggle Button (Desktop only) */}
-          <button
-            className={`hidden md:block text-white p-1 rounded-full hover:bg-gray-700 ${!isExpanded && !isMobileMenuOpen ? 'mx-auto' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleSidebar();
-            }}
-            aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
-          >
-            {isExpanded ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
-          </button>
+          {!isMobile && (
+            <button
+              className={`p-1 rounded-full ${
+                theme === 'dark' 
+                  ? 'text-white hover:bg-gray-700' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+              onClick={toggleSidebar}
+              aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
+            >
+              {isExpanded ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
+            </button>
+          )}
         </div>
 
         {/* Navigation Links */}
-        <nav className="mt-6 px-2">
+        <nav className="mt-6 px-2 overflow-y-auto h-[calc(100%-4rem)]">
           <ul className="space-y-2">
             {navItems.map((item) => {
               const isActive = pathname === item.path;
@@ -177,14 +200,19 @@ const Sidebar = () => {
                 <li key={item.path}>
                   <Link 
                     href={item.path}
-                    className={`sidebar-item flex items-center py-2 px-3 rounded-lg transition-colors
+                    className={`flex items-center py-2 px-3 rounded-lg transition-colors
                               ${isActive 
-                                ? 'active text-white' 
-                                : 'text-gray-400 hover:text-white'
-                              }`}
+                                ? theme === 'dark'
+                                  ? 'bg-gray-800 text-white'
+                                  : 'bg-gray-100 text-gray-900'
+                                : theme === 'dark'
+                                  ? 'text-gray-400 hover:text-white hover:bg-gray-800'
+                                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                              }
+                              ${(isExpanded || isMobileMenuOpen) ? '' : 'justify-center'}`}
+                    title={!(isExpanded || isMobileMenuOpen) ? item.name : ''}
                   >
                     <span className="flex-shrink-0">{item.icon}</span>
-                    
                     {(isExpanded || isMobileMenuOpen) && (
                       <span className="ml-3 font-medium">{item.name}</span>
                     )}

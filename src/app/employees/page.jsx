@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { FiSearch, FiFilter, FiPlus, FiEdit, FiTrash2, FiUser, FiMail, FiPhone, FiBriefcase } from 'react-icons/fi';
+import { FiSearch, FiFilter, FiPlus, FiEdit, FiTrash2, FiUser, FiMail, FiPhone, FiMapPin, FiClock, FiX, FiCheck } from 'react-icons/fi';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 const PageLayout = dynamic(() => import('@/components/layout/PageLayout'), {
   loading: () => <div className="h-screen bg-gray-100 dark:bg-primary animate-pulse"></div>,
@@ -14,247 +15,447 @@ const EMPLOYEES_DATA = [
   {
     id: 1,
     name: 'Alex Johnson',
-    email: 'alex.johnson@example.com',
     phone: '+1 (555) 123-4567',
-    department: 'Management',
-    position: 'Operations Manager',
-    hireDate: '2020-03-15',
-    salary: '75,000',
-    status: 'Active',
-    avatar: 'https://randomuser.me/api/portraits/men/11.jpg'
+    gender: 'Male',
+    email: 'alex.johnson@example.com',
+    pickupLocation: '123 Main St',
+    dropLocation: '456 Market St',
+    shiftTime: '09:00',
   },
-  {
-    id: 2,
-    name: 'Sarah Williams',
-    email: 'sarah.williams@example.com',
-    phone: '+1 (555) 987-6543',
-    department: 'Finance',
-    position: 'Financial Analyst',
-    hireDate: '2021-01-10',
-    salary: '65,000',
-    status: 'Active',
-    avatar: 'https://randomuser.me/api/portraits/women/12.jpg'
-  },
-  {
-    id: 3,
-    name: 'David Chen',
-    email: 'david.chen@example.com',
-    phone: '+1 (555) 456-7890',
-    department: 'IT',
-    position: 'System Administrator',
-    hireDate: '2019-06-22',
-    salary: '70,000',
-    status: 'On Leave',
-    avatar: 'https://randomuser.me/api/portraits/men/13.jpg'
-  },
-  {
-    id: 4,
-    name: 'Maria Rodriguez',
-    email: 'maria.rodriguez@example.com',
-    phone: '+1 (555) 234-5678',
-    department: 'Customer Service',
-    position: 'Customer Relations Manager',
-    hireDate: '2022-02-15',
-    salary: '60,000',
-    status: 'Active',
-    avatar: 'https://randomuser.me/api/portraits/women/14.jpg'
-  },
-  {
-    id: 5,
-    name: 'James Wilson',
-    email: 'james.wilson@example.com',
-    phone: '+1 (555) 876-5432',
-    department: 'HR',
-    position: 'HR Specialist',
-    hireDate: '2020-09-01',
-    salary: '62,000',
-    status: 'Inactive',
-    avatar: 'https://randomuser.me/api/portraits/men/15.jpg'
-  }
+  // ... you can keep or remove other sample data
 ];
+
+// Employee Form Modal Component
+const EmployeeFormModal = ({ isOpen, onClose, onSave, employee = null, title }) => {
+  const isEditMode = !!employee;
+  
+  const initialFormState = {
+    name: '',
+    phone: '',
+    gender: 'Male',
+    email: '',
+    pickupLocation: '',
+    dropLocation: '',
+    shiftTime: '',
+  };
+      
+  const [formData, setFormData] = useState(initialFormState);
+
+  // Reset form data when modal opens/closes or employee changes
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData(initialFormState);
+      return;
+    }
+
+    if (isEditMode && employee) {
+      setFormData({
+        name: employee.name || '',
+        phone: employee.phone || '',
+        gender: employee.gender || 'Male',
+        email: employee.email || '',
+        pickupLocation: employee.pickupLocation || '',
+        dropLocation: employee.dropLocation || '',
+        shiftTime: employee.shiftTime || '',
+      });
+    } else {
+      setFormData(initialFormState);
+    }
+  }, [isOpen, isEditMode]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Prepare employee data
+    const updatedEmployee = {
+      id: isEditMode ? employee.id : Date.now(),
+      ...formData
+    };
+    
+    onSave(updatedEmployee, isEditMode);
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg w-full max-w-5xl">
+        <div className="flex justify-between items-center border-b border-gray-800 p-4">
+          <h2 className="text-xl font-semibold text-white">{title}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-white">
+            <FiX size={24} />
+          </button>
+        </div>
+        
+        <div className="p-6">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="Enter your Name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="Enter your Phone Number"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Gender</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  required
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="Enter your Email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Pickup Location</label>
+                <input
+                  type="text"
+                  name="pickupLocation"
+                  value={formData.pickupLocation}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="Enter your Pickup Location"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Drop Location</label>
+                <input
+                  type="text"
+                  name="dropLocation"
+                  value={formData.dropLocation}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="Enter your Drop Location"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Shift Time</label>
+                <input
+                  type="time"
+                  name="shiftTime"
+                  value={formData.shiftTime}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-6 border-t border-gray-800 mt-6">
+              <button
+                type="button"
+                onClick={onClose}
+                className="mr-4 px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                {isEditMode ? 'Update' : 'Submit'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Toast Notification Component
+const Toast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className="fixed top-4 right-4 z-50 flex items-center bg-gray-900 border border-gray-700 rounded-lg shadow-lg px-4 py-3">
+      {type === 'success' && (
+        <FiCheck className="text-green-400 mr-2" size={20} />
+      )}
+      <p className="text-white">{message}</p>
+    </div>
+  );
+};
 
 const EmployeesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState('All');
   const [employees, setEmployees] = useState(EMPLOYEES_DATA);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState(null);
+  const [modalTitle, setModalTitle] = useState('Add New Employee');
+  const [toast, setToast] = useState(null);
 
-  // Filter employees based on search term and department filter
+  // Show toast notification
+  const showToast = (message, type = 'success') => {
+    setToast({ message, type });
+  };
+
+  // Hide toast notification
+  const hideToast = () => {
+    setToast(null);
+  };
+
+  // Filter employees based on search term
   const filteredEmployees = employees.filter(employee => {
     const matchesSearch = 
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.position.toLowerCase().includes(searchTerm.toLowerCase());
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesDepartment = departmentFilter === 'All' || employee.department === departmentFilter;
-    
-    return matchesSearch && matchesDepartment;
+    return matchesSearch;
   });
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
       setEmployees(employees.filter(employee => employee.id !== id));
+      showToast('Employee deleted successfully');
     }
   };
 
-  // Get unique departments for filter
-  const departments = ['All', ...new Set(employees.map(employee => employee.department))];
+  const handleOpenAddModal = () => {
+    setEditingEmployee(null);
+    setModalTitle('Add New Employee');
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (employee) => {
+    setEditingEmployee(employee);
+    setModalTitle(`Edit Employee: ${employee.name}`);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingEmployee(null);
+  };
+
+  const handleSaveEmployee = (employeeData, isEdit) => {
+    if (isEdit) {
+      // Update existing employee
+      setEmployees(employees.map(emp => 
+        emp.id === employeeData.id ? employeeData : emp
+      ));
+      showToast('Employee updated successfully');
+    } else {
+      // Add new employee
+      setEmployees([...employees, employeeData]);
+      showToast('Employee added successfully');
+    }
+    handleCloseModal();
+  };
 
   return (
     <PageLayout title="Employees">
-      <div className="bg-white dark:bg-primary rounded-lg shadow-md p-6">
-        {/* Header with search and filters */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-          <div className="relative w-full md:w-64">
+      <div className="bg-gray-900 rounded-lg shadow-md p-6 border border-gray-800">
+        {/* Header with search and add button */}
+        <div className="flex justify-between items-center mb-6">
+          <div className="relative w-64">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiSearch className="text-gray-400 dark:text-gray-600" />
+              <FiSearch className="text-gray-500" />
             </div>
             <input
               type="text"
-              className="pl-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-primary-light text-gray-900 dark:text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-sidebar"
+              className="pl-10 w-full rounded-md border border-gray-700 bg-gray-800 text-gray-200 placeholder-gray-500 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Search employees..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <div className="flex items-center gap-2">
-              <FiFilter className="text-gray-500 dark:text-gray-400" />
-              <select
-                className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-primary-light text-gray-900 dark:text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-sidebar"
-                value={departmentFilter}
-                onChange={(e) => setDepartmentFilter(e.target.value)}
-              >
-                {departments.map(dept => (
-                  <option key={dept} value={dept}>{dept}</option>
-                ))}
-              </select>
-            </div>
-            
-            <a 
-              href="/add-employees" 
-              className="bg-sidebar hover:bg-sidebar-light text-white py-2 px-4 rounded-md flex items-center transition-colors"
-            >
-              <FiPlus className="mr-2" />
-              Add Employee
-            </a>
-          </div>
+          <button 
+            onClick={handleOpenAddModal}
+            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center transition-colors"
+          >
+            <FiPlus className="mr-2" />
+            Add Employee
+          </button>
         </div>
         
         {/* Employees Table */}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-primary-light">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Employee
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Contact
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Position
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Hire Date
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Status
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-primary divide-y divide-gray-200 dark:divide-gray-700">
-              {filteredEmployees.length > 0 ? (
-                filteredEmployees.map((employee) => (
-                  <tr key={employee.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 flex-shrink-0">
-                          <img 
-                            className="h-10 w-10 rounded-full object-cover" 
-                            src={employee.avatar} 
-                            alt={employee.name}
-                            onError={(e) => {
-                              e.target.src = 'https://ui-avatars.com/api/?name=' + employee.name.replace(' ', '+') + '&background=3b82f6&color=ffffff';
-                            }}
-                          />
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
-                            {employee.name}
-                          </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
-                            {employee.department}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
-                        <div className="flex items-center mb-1">
-                          <FiMail className="mr-1" size={12} />
-                          {employee.email}
-                        </div>
-                        <div className="flex items-center">
-                          <FiPhone className="mr-1" size={12} />
-                          {employee.phone}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center text-sm text-gray-900 dark:text-white">
-                        <FiBriefcase className="mr-1" size={12} />
-                        {employee.position}
-                      </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
-                        ${employee.salary}/year
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900 dark:text-white">
-                        {new Date(employee.hireDate).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        ${employee.status === 'Active' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
-                          employee.status === 'Inactive' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
-                          'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'}`}>
-                        {employee.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <button className="text-sidebar hover:text-sidebar-light transition-colors">
-                          <FiEdit size={18} />
-                        </button>
-                        <button 
-                          className="text-red-500 hover:text-red-700 transition-colors"
-                          onClick={() => handleDelete(employee.id)}
-                        >
-                          <FiTrash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={6} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                    No employees found matching your search criteria.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+  {/* Table view for medium screens and up */}
+  <table className="hidden md:table min-w-full divide-y divide-gray-800">
+    <thead className="bg-gray-800">
+      <tr>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Phone</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Gender</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Pickup Location</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Drop Location</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Shift Time</th>
+        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+    <tbody className="bg-gray-900 divide-y divide-gray-800">
+      {filteredEmployees.length > 0 ? (
+        filteredEmployees.map((employee) => (
+          <tr key={employee.id} className="hover:bg-gray-800 transition-colors">
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.name}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.phone}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.gender}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.email}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.pickupLocation}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.dropLocation}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.shiftTime}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <div className="flex space-x-3">
+                <button 
+                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  onClick={() => handleOpenEditModal(employee)}
+                >
+                  <FiEdit size={18} />
+                </button>
+                <button 
+                  className="text-red-400 hover:text-red-300 transition-colors"
+                  onClick={() => handleDelete(employee.id)}
+                >
+                  <FiTrash2 size={18} />
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan={8} className="px-6 py-4 text-center text-gray-400">
+            No employees found matching your search criteria.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+
+  {/* Card view for mobile */}
+  <div className="md:hidden space-y-4">
+    {filteredEmployees.length > 0 ? (
+      filteredEmployees.map((employee) => (
+        <div key={employee.id} className="bg-gray-800 rounded-lg p-4 shadow">
+          <div className="space-y-2">
+            <div className="flex justify-between items-start">
+              <h3 className="text-lg font-medium text-gray-300">{employee.name}</h3>
+              <div className="flex space-x-2">
+                <button 
+                  className="text-blue-400 hover:text-blue-300 transition-colors"
+                  onClick={() => handleOpenEditModal(employee)}
+                >
+                  <FiEdit size={18} />
+                </button>
+                <button 
+                  className="text-red-400 hover:text-red-300 transition-colors"
+                  onClick={() => handleDelete(employee.id)}
+                >
+                  <FiTrash2 size={18} />
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <p className="text-gray-400">Phone</p>
+                <p className="text-gray-300">{employee.phone}</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Gender</p>
+                <p className="text-gray-300">{employee.gender}</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Email</p>
+                <p className="text-gray-300 truncate">{employee.email}</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Shift Time</p>
+                <p className="text-gray-300">{employee.shiftTime}</p>
+              </div>
+              <div className="col-span-2">
+                <p className="text-gray-400">Pickup Location</p>
+                <p className="text-gray-300">{employee.pickupLocation}</p>
+              </div>
+              <div className="col-span-2">
+                <p className="text-gray-400">Drop Location</p>
+                <p className="text-gray-300">{employee.dropLocation}</p>
+              </div>
+            </div>
+          </div>
         </div>
+      ))
+    ) : (
+      <div className="text-center text-gray-400 py-4">
+        No employees found matching your search criteria.
+      </div>
+    )}
+  </div>
+</div>
+
+        {/* Employee Form Modal - handles both Add and Edit */}
+        <EmployeeFormModal 
+          isOpen={isModalOpen} 
+          onClose={handleCloseModal} 
+          onSave={handleSaveEmployee}
+          employee={editingEmployee}
+          title={modalTitle}
+        />
+
+        {/* Toast Notification */}
+        {toast && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={hideToast}
+          />
+        )}
       </div>
     </PageLayout>
   );
