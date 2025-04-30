@@ -361,16 +361,16 @@ const DriversPage = () => {
   return (
     <PageLayout title="Drivers">
       <Toaster position="top-right" richColors />
-      <div className="bg-white dark:bg-gray-900 rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md p-6">
         {/* Header with search and filters */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
           <div className="relative w-full md:w-64">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiSearch className="text-gray-400 dark:text-gray-400" />
+              <FiSearch className="text-gray-500" />
             </div>
             <input
               type="text"
-              className="pl-10 w-full rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+              className="pl-10 w-full rounded-md border border-gray-200 bg-gray-50 text-gray-700 placeholder-gray-500 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search drivers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -379,9 +379,9 @@ const DriversPage = () => {
 
           <div className="flex items-center gap-4 w-full md:w-auto">
             <div className="flex items-center gap-2">
-              <FiFilter className="text-gray-500 dark:text-gray-400" />
+              <FiFilter className="text-gray-500" />
               <select
-                className="rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600"
+                className="rounded-md border border-gray-200 bg-gray-50 text-gray-700 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -392,199 +392,199 @@ const DriversPage = () => {
               </select>
             </div>
 
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={() => setIsAddModalOpen(true)}>
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white" onClick={() => setIsAddModalOpen(true)}>
               <FiPlus className="mr-2" />
               Add Driver
             </Button>
           </div>
         </div>
 
-        {/* Updated Drivers Table */}
-       <div className="overflow-x-auto">
-  {/* Desktop Table (hidden on mobile) */}
-  <table className="hidden md:table min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-    <thead className="bg-gray-50 dark:bg-gray-800">
-      <tr>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-          Driver Name
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-          Mobile Number
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-          License Number
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-          License Expiry
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-          Status
-        </th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-      {filteredDrivers.length > 0 ? (
-        filteredDrivers.map((driver) => (
-          <tr key={driver.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="flex items-center">
-                <div className="h-10 w-10 flex-shrink-0">
-                  <img
-                    className="h-10 w-10 rounded-full object-cover"
-                    src={driver.driverPhoto || "/placeholder.svg"}
-                    alt={driver.name}
-                    onError={(e) => {
-                      e.target.src = "https://ui-avatars.com/api/?name=" + driver.name.replace(" ", "+") + "&background=3b82f6&color=ffffff"
-                    }}
-                  />
+        {/* Drivers Table */}
+        <div className="overflow-x-auto">
+          {/* Desktop Table (hidden on mobile) */}
+          <table className="hidden md:table min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Driver Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Mobile Number
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  License Number
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  License Expiry
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredDrivers.length > 0 ? (
+                filteredDrivers.map((driver) => (
+                  <tr key={driver.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="h-10 w-10 flex-shrink-0">
+                          <img
+                            className="h-10 w-10 rounded-full object-cover"
+                            src={driver.driverPhoto || "/placeholder.svg"}
+                            alt={driver.name}
+                            onError={(e) => {
+                              e.target.src = "https://ui-avatars.com/api/?name=" + driver.name.replace(" ", "+") + "&background=3b82f6&color=ffffff"
+                            }}
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-700">{driver.name}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700">{driver.mobile}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700">{driver.licenseNumber}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700">{driver.licenseExpiry}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        driver.status === "Active"
+                          ? "bg-green-100 text-green-800"
+                          : driver.status === "Inactive"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                      }`}>
+                        {driver.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <button
+                        className="text-blue-500 hover:text-blue-600 transition-colors"
+                        onClick={() => handleViewDetails(driver)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                    No drivers found matching your search criteria.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+
+          {/* Mobile Cards (shown on mobile) */}
+          <div className="md:hidden space-y-4">
+            {filteredDrivers.length > 0 ? (
+              filteredDrivers.map((driver) => (
+                <div key={driver.id} className="bg-white rounded-lg shadow p-4 border border-gray-200">
+                  {/* Driver Header */}
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center">
+                      <div className="h-12 w-12 flex-shrink-0">
+                        <img
+                          className="h-12 w-12 rounded-full object-cover"
+                          src={driver.driverPhoto || "/placeholder.svg"}
+                          alt={driver.name}
+                          onError={(e) => {
+                            e.target.src = "https://ui-avatars.com/api/?name=" + driver.name.replace(" ", "+") + "&background=3b82f6&color=ffffff"
+                          }}
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-gray-700">{driver.name}</h3>
+                        <p className="text-sm text-gray-500">{driver.mobile}</p>
+                      </div>
+                    </div>
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      driver.status === "Active"
+                        ? "bg-green-100 text-green-800"
+                        : driver.status === "Inactive"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-yellow-100 text-yellow-800"
+                    }`}>
+                      {driver.status}
+                    </span>
+                  </div>
+
+                  {/* Driver Details */}
+                  <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <p className="text-gray-500">License Number</p>
+                      <p className="text-gray-700">{driver.licenseNumber}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">License Expiry</p>
+                      <p className="text-gray-700">{driver.licenseExpiry}</p>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      className="text-blue-500 hover:text-blue-600 transition-colors text-sm font-medium"
+                      onClick={() => handleViewDetails(driver)}
+                    >
+                      View Details
+                    </button>
+                  </div>
                 </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">{driver.name}</div>
-                </div>
+              ))
+            ) : (
+              <div className="px-6 py-4 text-center text-gray-500">
+                No drivers found matching your search criteria.
               </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-gray-900 dark:text-white">{driver.mobile}</div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-gray-900 dark:text-white">{driver.licenseNumber}</div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-gray-900 dark:text-white">{driver.licenseExpiry}</div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                driver.status === "Active"
-                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                  : driver.status === "Inactive"
-                    ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-              }`}>
-                {driver.status}
-              </span>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <button
-                className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-                onClick={() => handleViewDetails(driver)}
-              >
-                View Details
-              </button>
-            </td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan={6} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-            No drivers found matching your search criteria.
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-
-  {/* Mobile Cards (shown on mobile) */}
-  <div className="md:hidden space-y-4">
-    {filteredDrivers.length > 0 ? (
-      filteredDrivers.map((driver) => (
-        <div key={driver.id} className="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-          {/* Driver Header */}
-          <div className="flex items-start justify-between">
-            <div className="flex items-center">
-              <div className="h-12 w-12 flex-shrink-0">
-                <img
-                  className="h-12 w-12 rounded-full object-cover"
-                  src={driver.driverPhoto || "/placeholder.svg"}
-                  alt={driver.name}
-                  onError={(e) => {
-                    e.target.src = "https://ui-avatars.com/api/?name=" + driver.name.replace(" ", "+") + "&background=3b82f6&color=ffffff"
-                  }}
-                />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-gray-900 dark:text-white">{driver.name}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">{driver.mobile}</p>
-              </div>
-            </div>
-            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-              driver.status === "Active"
-                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                : driver.status === "Inactive"
-                  ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                  : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-            }`}>
-              {driver.status}
-            </span>
-          </div>
-
-          {/* Driver Details */}
-          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            <div>
-              <p className="text-gray-500 dark:text-gray-400">License Number</p>
-              <p className="text-gray-900 dark:text-white">{driver.licenseNumber}</p>
-            </div>
-            <div>
-              <p className="text-gray-500 dark:text-gray-400">License Expiry</p>
-              <p className="text-gray-900 dark:text-white">{driver.licenseExpiry}</p>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="mt-4 flex justify-end">
-            <button
-              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors text-sm font-medium"
-              onClick={() => handleViewDetails(driver)}
-            >
-              View Details
-            </button>
+            )}
           </div>
         </div>
-      ))
-    ) : (
-      <div className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-        No drivers found matching your search criteria.
-      </div>
-    )}
-  </div>
-</div>
       </div>
 
       {/* View/Edit Driver Modal */}
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
         <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
-        <DialogHeader>
-  <DialogTitle className="flex justify-between items-center">
-    <span>{isEditMode ? "Edit Driver" : "Driver Details"}</span>
-    <div className="flex gap-2">
-      {!isEditMode && (
-        <>
-          <Button
-            className="bg-green-600 hover:bg-green-700"
-            onClick={() => handleApprove()}
-          >
-            Approve
-          </Button>
-          <Button
-            className="bg-red-600 hover:bg-red-700"
-            onClick={() => handleReject()}
-          >
-            Reject
-          </Button>
-          <Button
-            className="bg-blue-600 hover:bg-blue-700"
-            onClick={() => setIsEditMode(true)}
-          >
-            <FiEdit className="mr-2" />
-            Edit
-          </Button>
-        </>
-      )}
-    </div>
-  </DialogTitle>
-</DialogHeader>
+          <DialogHeader>
+            <DialogTitle className="flex justify-between items-center">
+              <span className="text-gray-700">{isEditMode ? "Edit Driver" : "Driver Details"}</span>
+              <div className="flex gap-2">
+                {!isEditMode && (
+                  <>
+                    <Button
+                      className="bg-green-500 hover:bg-green-600 text-white"
+                      onClick={() => handleApprove()}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      className="bg-red-500 hover:bg-red-600 text-white"
+                      onClick={() => handleReject()}
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      className="bg-blue-500 hover:bg-blue-600 text-white"
+                      onClick={() => setIsEditMode(true)}
+                    >
+                      <FiEdit className="mr-2" />
+                      Edit
+                    </Button>
+                  </>
+                )}
+              </div>
+            </DialogTitle>
+          </DialogHeader>
 
           <div className="grid gap-6 py-4">
             {/* Driver Photo */}

@@ -299,7 +299,7 @@ const EmployeesPage = () => {
 
   return (
     <PageLayout title="Employees">
-      <div className="bg-gray-900 rounded-lg shadow-md p-6 border border-gray-800">
+      <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
         {/* Header with search and add button */}
         <div className="flex justify-between items-center mb-6">
           <div className="relative w-64">
@@ -308,7 +308,7 @@ const EmployeesPage = () => {
             </div>
             <input
               type="text"
-              className="pl-10 w-full rounded-md border border-gray-700 bg-gray-800 text-gray-200 placeholder-gray-500 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="pl-10 w-full rounded-md border border-gray-200 bg-gray-50 text-gray-700 placeholder-gray-500 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search employees..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -317,7 +317,7 @@ const EmployeesPage = () => {
           
           <button 
             onClick={handleOpenAddModal}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center transition-colors"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center transition-colors"
           >
             <FiPlus className="mr-2" />
             Add Employee
@@ -326,120 +326,120 @@ const EmployeesPage = () => {
         
         {/* Employees Table */}
         <div className="overflow-x-auto">
-  {/* Table view for medium screens and up */}
-  <table className="hidden md:table min-w-full divide-y divide-gray-800">
-    <thead className="bg-gray-800">
-      <tr>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Phone</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Gender</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Pickup Location</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Drop Location</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Shift Time</th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
-      </tr>
-    </thead>
-    <tbody className="bg-gray-900 divide-y divide-gray-800">
-      {filteredEmployees.length > 0 ? (
-        filteredEmployees.map((employee) => (
-          <tr key={employee.id} className="hover:bg-gray-800 transition-colors">
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.name}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.phone}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.gender}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.email}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.pickupLocation}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.dropLocation}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{employee.shiftTime}</td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <div className="flex space-x-3">
-                <button 
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
-                  onClick={() => handleOpenEditModal(employee)}
-                >
-                  <FiEdit size={18} />
-                </button>
-                <button 
-                  className="text-red-400 hover:text-red-300 transition-colors"
-                  onClick={() => handleDelete(employee.id)}
-                >
-                  <FiTrash2 size={18} />
-                </button>
-              </div>
-            </td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan={8} className="px-6 py-4 text-center text-gray-400">
-            No employees found matching your search criteria.
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
+          {/* Table view for medium screens and up */}
+          <table className="hidden md:table min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pickup Location</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drop Location</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift Time</th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredEmployees.length > 0 ? (
+                filteredEmployees.map((employee) => (
+                  <tr key={employee.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.phone}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.gender}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.pickupLocation}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.dropLocation}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.shiftTime}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex space-x-3">
+                        <button 
+                          className="text-blue-500 hover:text-blue-600 transition-colors"
+                          onClick={() => handleOpenEditModal(employee)}
+                        >
+                          <FiEdit size={18} />
+                        </button>
+                        <button 
+                          className="text-red-500 hover:text-red-600 transition-colors"
+                          onClick={() => handleDelete(employee.id)}
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                    No employees found matching your search criteria.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
 
-  {/* Card view for mobile */}
-  <div className="md:hidden space-y-4">
-    {filteredEmployees.length > 0 ? (
-      filteredEmployees.map((employee) => (
-        <div key={employee.id} className="bg-gray-800 rounded-lg p-4 shadow">
-          <div className="space-y-2">
-            <div className="flex justify-between items-start">
-              <h3 className="text-lg font-medium text-gray-300">{employee.name}</h3>
-              <div className="flex space-x-2">
-                <button 
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
-                  onClick={() => handleOpenEditModal(employee)}
-                >
-                  <FiEdit size={18} />
-                </button>
-                <button 
-                  className="text-red-400 hover:text-red-300 transition-colors"
-                  onClick={() => handleDelete(employee.id)}
-                >
-                  <FiTrash2 size={18} />
-                </button>
+          {/* Card view for mobile */}
+          <div className="md:hidden space-y-4">
+            {filteredEmployees.length > 0 ? (
+              filteredEmployees.map((employee) => (
+                <div key={employee.id} className="bg-white rounded-lg p-4 shadow border border-gray-200">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-start">
+                      <h3 className="text-lg font-medium text-gray-700">{employee.name}</h3>
+                      <div className="flex space-x-2">
+                        <button 
+                          className="text-blue-500 hover:text-blue-600 transition-colors"
+                          onClick={() => handleOpenEditModal(employee)}
+                        >
+                          <FiEdit size={18} />
+                        </button>
+                        <button 
+                          className="text-red-500 hover:text-red-600 transition-colors"
+                          onClick={() => handleDelete(employee.id)}
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>
+                        <p className="text-gray-500">Phone</p>
+                        <p className="text-gray-700">{employee.phone}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Gender</p>
+                        <p className="text-gray-700">{employee.gender}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Email</p>
+                        <p className="text-gray-700 truncate">{employee.email}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-500">Shift Time</p>
+                        <p className="text-gray-700">{employee.shiftTime}</p>
+                      </div>
+                      <div className="col-span-2">
+                        <p className="text-gray-500">Pickup Location</p>
+                        <p className="text-gray-700">{employee.pickupLocation}</p>
+                      </div>
+                      <div className="col-span-2">
+                        <p className="text-gray-500">Drop Location</p>
+                        <p className="text-gray-700">{employee.dropLocation}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center text-gray-500 py-4">
+                No employees found matching your search criteria.
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div>
-                <p className="text-gray-400">Phone</p>
-                <p className="text-gray-300">{employee.phone}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Gender</p>
-                <p className="text-gray-300">{employee.gender}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Email</p>
-                <p className="text-gray-300 truncate">{employee.email}</p>
-              </div>
-              <div>
-                <p className="text-gray-400">Shift Time</p>
-                <p className="text-gray-300">{employee.shiftTime}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-gray-400">Pickup Location</p>
-                <p className="text-gray-300">{employee.pickupLocation}</p>
-              </div>
-              <div className="col-span-2">
-                <p className="text-gray-400">Drop Location</p>
-                <p className="text-gray-300">{employee.dropLocation}</p>
-              </div>
-            </div>
+            )}
           </div>
         </div>
-      ))
-    ) : (
-      <div className="text-center text-gray-400 py-4">
-        No employees found matching your search criteria.
-      </div>
-    )}
-  </div>
-</div>
 
-        {/* Employee Form Modal - handles both Add and Edit */}
+        {/* Employee Form Modal */}
         <EmployeeFormModal 
           isOpen={isModalOpen} 
           onClose={handleCloseModal} 

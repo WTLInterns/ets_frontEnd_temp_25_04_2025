@@ -387,16 +387,16 @@ const VehiclesPage = () => {
 
   return (
     <PageLayout title="Vehicles" className="dark">
-      <div className="bg-gray-900 rounded-lg shadow-md p-6">
+      <div className="bg-white rounded-lg shadow-md p-6">
         {/* Header with search and filters */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
           <div className="relative w-full md:w-64">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiSearch className="text-gray-400" />
+              <FiSearch className="text-gray-500" />
             </div>
             <input
               type="text"
-              className="pl-10 w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-10 w-full rounded-md border border-gray-200 bg-gray-50 text-gray-700 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Search vehicles..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -405,9 +405,9 @@ const VehiclesPage = () => {
 
           <div className="flex items-center gap-4 w-full md:w-auto">
             <div className="flex items-center gap-2">
-              <FiFilter className="text-gray-400" />
+              <FiFilter className="text-gray-500" />
               <select
-                className="rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="rounded-md border border-gray-200 bg-gray-50 text-gray-700 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -420,7 +420,7 @@ const VehiclesPage = () => {
 
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center transition-colors"
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center transition-colors"
             >
               <FiPlus className="mr-2" />
               Add Vehicle
@@ -430,324 +430,323 @@ const VehiclesPage = () => {
 
         {/* Vehicles Table */}
         <div className="overflow-x-auto">
-  {/* Desktop Table (hidden on mobile) */}
-  <table className="hidden md:table min-w-full divide-y divide-gray-700">
-    <thead className="bg-gray-800">
-      <tr>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Vehicle
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Details
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Registration
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Ownership & Insurance
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Documents
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Status
-        </th>
-        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody className="bg-gray-900 divide-y divide-gray-700">
-      {filteredVehicles.length > 0 ? (
-        filteredVehicles.map((vehicle) => (
-          <tr key={vehicle.id} className="hover:bg-gray-800">
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="flex items-center">
-                <div className="h-12 w-12 flex-shrink-0 bg-gray-800 rounded-md overflow-hidden">
-                  <img
-                    className="h-12 w-12 object-contain"
-                    src={vehicle.image || "/placeholder.svg"}
-                    alt={vehicle.name}
-                    onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/100x60?text=Vehicle"
-                    }}
-                  />
-                </div>
-                <div className="ml-4">
-                  <div className="text-sm font-medium text-white">{vehicle.name || `${vehicle.brand} ${vehicle.modelType}`}</div>
-                  <div className="text-sm text-gray-400">
-                    {vehicle.type || vehicle.vehicleCategory}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {vehicle.vehicleNo && `No: ${vehicle.vehicleNo}`}
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-white">
-                <div className="flex items-center mb-1">
-                  <FiTruck className="mr-1 text-gray-400" size={12} />
-                  {vehicle.model || vehicle.modelType} ({vehicle.color})
-                </div>
-                <div className="flex items-center mb-1">
-                  <FiCalendar className="mr-1 text-gray-400" size={12} />
-                  {vehicle.year} • {vehicle.mileage} miles
-                </div>
-                <div className="text-xs text-gray-400">
-                  {vehicle.fuelType} • {vehicle.transmissionType}
-                </div>
-              </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <div className="text-sm text-white">
-                {vehicle.licensePlate || vehicle.vehicleNo}
-              </div>
-              <div className="text-sm text-gray-400">
-                VIN: {vehicle.vin}
-              </div>
-              {vehicle.registrationDate && (
-                <div className="text-xs text-gray-500 mt-1">
-                  Reg: {vehicle.registrationDate}
-                </div>
+          {/* Desktop Table (hidden on mobile) */}
+          <table className="hidden md:table min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Vehicle
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Details
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Registration
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Ownership & Insurance
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Documents
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredVehicles.length > 0 ? (
+                filteredVehicles.map((vehicle) => (
+                  <tr key={vehicle.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="h-12 w-12 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden">
+                          <img
+                            className="h-12 w-12 object-contain"
+                            src={vehicle.image || "/placeholder.svg"}
+                            alt={vehicle.name}
+                            onError={(e) => {
+                              e.target.src = "https://via.placeholder.com/100x60?text=Vehicle"
+                            }}
+                          />
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-700">{vehicle.name || `${vehicle.brand} ${vehicle.modelType}`}</div>
+                          <div className="text-sm text-gray-500">
+                            {vehicle.type || vehicle.vehicleCategory}
+                          </div>
+                          <div className="text-xs text-gray-400 mt-1">
+                            {vehicle.vehicleNo && `No: ${vehicle.vehicleNo}`}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700">
+                        <div className="flex items-center mb-1">
+                          <FiTruck className="mr-1 text-gray-500" size={12} />
+                          {vehicle.model || vehicle.modelType} ({vehicle.color})
+                        </div>
+                        <div className="flex items-center mb-1">
+                          <FiCalendar className="mr-1 text-gray-500" size={12} />
+                          {vehicle.year} • {vehicle.mileage} miles
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {vehicle.fuelType} • {vehicle.transmissionType}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700">
+                        {vehicle.licensePlate || vehicle.vehicleNo}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        VIN: {vehicle.vin}
+                      </div>
+                      {vehicle.registrationDate && (
+                        <div className="text-xs text-gray-400 mt-1">
+                          Reg: {vehicle.registrationDate}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-700">
+                        {vehicle.vehicleOwnership && (
+                          <div className="mb-1">Ownership: {vehicle.vehicleOwnership}</div>
+                        )}
+                        {vehicle.insuranceDate && (
+                          <div className="text-sm text-gray-500">
+                            Insurance: {vehicle.insuranceDate}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-2">
+                        {vehicle.insuranceCopy && (
+                          <div className="flex items-center">
+                            <FiFile className="mr-2 text-gray-500" size={16} />
+                            <span className="text-sm text-gray-600">Insurance Copy</span>
+                          </div>
+                        )}
+                        {vehicle.registrationFront && (
+                          <div className="flex items-center">
+                            <FiFile className="mr-2 text-gray-500" size={16} />
+                            <span className="text-sm text-gray-600">Registration Front</span>
+                          </div>
+                        )}
+                        {vehicle.registrationBack && (
+                          <div className="flex items-center">
+                            <FiFile className="mr-2 text-gray-500" size={16} />
+                            <span className="text-sm text-gray-600">Registration Back</span>
+                          </div>
+                        )}
+                        {vehicle.carNumberPhoto && (
+                          <div className="flex items-center">
+                            <FiFile className="mr-2 text-gray-500" size={16} />
+                            <span className="text-sm text-gray-600">Car Number Photo</span>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        ${
+                          vehicle.status === "Available"
+                            ? "bg-green-50 text-green-700"
+                            : vehicle.status === "Maintenance"
+                              ? "bg-red-50 text-red-700"
+                              : "bg-yellow-50 text-yellow-700"
+                        }`}
+                      >
+                        {vehicle.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <button
+                          className="text-blue-500 hover:text-blue-600 transition-colors"
+                          onClick={() => handleEdit(vehicle)}
+                        >
+                          <FiEdit size={18} />
+                        </button>
+                        <button
+                          className="text-red-500 hover:text-red-600 transition-colors"
+                          onClick={() => handleDelete(vehicle.id)}
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
+                    No vehicles found matching your search criteria.
+                  </td>
+                </tr>
               )}
-            </td>
-            <td className="px-6 py-4">
-              <div className="text-sm text-white">
-                {vehicle.vehicleOwnership && (
-                  <div className="mb-1">Ownership: {vehicle.vehicleOwnership}</div>
-                )}
-                {vehicle.insuranceDate && (
-                  <div className="text-sm text-gray-400">
-                    Insurance: {vehicle.insuranceDate}
-                  </div>
-                )}
-              </div>
-            </td>
-            <td className="px-6 py-4">
-              <div className="flex flex-col gap-2">
-                {vehicle.insuranceCopy && (
-                  <div className="flex items-center">
-                    <FiFile className="mr-2 text-gray-400" size={16} />
-                    <span className="text-sm text-gray-300">Insurance Copy</span>
-                  </div>
-                )}
-                {vehicle.registrationFront && (
-                  <div className="flex items-center">
-                    <FiFile className="mr-2 text-gray-400" size={16} />
-                    <span className="text-sm text-gray-300">Registration Front</span>
-                  </div>
-                )}
-                {vehicle.registrationBack && (
-                  <div className="flex items-center">
-                    <FiFile className="mr-2 text-gray-400" size={16} />
-                    <span className="text-sm text-gray-300">Registration Back</span>
-                  </div>
-                )}
-                {vehicle.carNumberPhoto && (
-                  <div className="flex items-center">
-                    <FiFile className="mr-2 text-gray-400" size={16} />
-                    <span className="text-sm text-gray-300">Car Number Photo</span>
-                  </div>
-                )}
-              </div>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap">
-              <span
-                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                ${
-                  vehicle.status === "Available"
-                    ? "bg-green-900 text-green-200"
-                    : vehicle.status === "Maintenance"
-                      ? "bg-red-900 text-red-200"
-                      : "bg-yellow-900 text-yellow-200"
-                }`}
-              >
-                {vehicle.status}
-              </span>
-            </td>
-            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <div className="flex space-x-2">
-                <button
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
-                  onClick={() => handleEdit(vehicle)}
-                >
-                  <FiEdit size={18} />
-                </button>
-                <button
-                  className="text-red-400 hover:text-red-300 transition-colors"
-                  onClick={() => handleDelete(vehicle.id)}
-                >
-                  <FiTrash2 size={18} />
-                </button>
-              </div>
-            </td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan={7} className="px-6 py-4 text-center text-gray-400">
-            No vehicles found matching your search criteria.
-          </td>
-        </tr>
-      )}
-    </tbody>
-  </table>
+            </tbody>
+          </table>
 
-  {/* Mobile Cards (shown on mobile) */}
-  <div className="md:hidden space-y-4">
-    {filteredVehicles.length > 0 ? (
-      filteredVehicles.map((vehicle) => (
-        <div key={vehicle.id} className="bg-gray-800 rounded-lg p-4 shadow">
-          {/* Vehicle Header */}
-          <div className="flex items-start justify-between">
-            <div className="flex items-center">
-              <div className="h-12 w-12 flex-shrink-0 bg-gray-700 rounded-md overflow-hidden">
-                <img
-                  className="h-12 w-12 object-contain"
-                  src={vehicle.image || "/placeholder.svg"}
-                  alt={vehicle.name}
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/100x60?text=Vehicle"
-                  }}
-                />
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-white">
-                  {vehicle.name || `${vehicle.brand} ${vehicle.modelType}`}
-                </h3>
-                <p className="text-xs text-gray-400">
-                  {vehicle.type || vehicle.vehicleCategory}
-                </p>
-              </div>
-            </div>
-            <span
-              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-              ${
-                vehicle.status === "Available"
-                  ? "bg-green-900 text-green-200"
-                  : vehicle.status === "Maintenance"
-                    ? "bg-red-900 text-red-200"
-                    : "bg-yellow-900 text-yellow-200"
-              }`}
-            >
-              {vehicle.status}
-            </span>
-          </div>
+          {/* Mobile Cards (shown on mobile) */}
+          <div className="md:hidden space-y-4">
+            {filteredVehicles.length > 0 ? (
+              filteredVehicles.map((vehicle) => (
+                <div key={vehicle.id} className="bg-white rounded-lg p-4 shadow">
+                  {/* Vehicle Header */}
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center">
+                      <div className="h-12 w-12 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden">
+                        <img
+                          className="h-12 w-12 object-contain"
+                          src={vehicle.image || "/placeholder.svg"}
+                          alt={vehicle.name}
+                          onError={(e) => {
+                            e.target.src = "https://via.placeholder.com/100x60?text=Vehicle"
+                          }}
+                        />
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-gray-700">
+                          {vehicle.name || `${vehicle.brand} ${vehicle.modelType}`}
+                        </h3>
+                        <p className="text-xs text-gray-500">
+                          {vehicle.type || vehicle.vehicleCategory}
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${
+                        vehicle.status === "Available"
+                          ? "bg-green-50 text-green-700"
+                          : vehicle.status === "Maintenance"
+                            ? "bg-red-50 text-red-700"
+                            : "bg-yellow-50 text-yellow-700"
+                      }`}
+                    >
+                      {vehicle.status}
+                    </span>
+                  </div>
 
-          {/* Vehicle Details */}
-          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            <div>
-              <p className="text-gray-400">Model</p>
-              <p className="text-white">{vehicle.model || vehicle.modelType}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Year</p>
-              <p className="text-white">{vehicle.year}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Color</p>
-              <p className="text-white">{vehicle.color}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Mileage</p>
-              <p className="text-white">{vehicle.mileage} miles</p>
-            </div>
-            <div>
-              <p className="text-gray-400">Plate</p>
-              <p className="text-white">{vehicle.licensePlate || vehicle.vehicleNo}</p>
-            </div>
-            <div>
-              <p className="text-gray-400">VIN</p>
-              <p className="text-white truncate">{vehicle.vin}</p>
-            </div>
-          </div>
+                  {/* Vehicle Details */}
+                  <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <p className="text-gray-500">Model</p>
+                      <p className="text-gray-700">{vehicle.model || vehicle.modelType}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Year</p>
+                      <p className="text-gray-700">{vehicle.year}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Color</p>
+                      <p className="text-gray-700">{vehicle.color}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Mileage</p>
+                      <p className="text-gray-700">{vehicle.mileage} miles</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Plate</p>
+                      <p className="text-gray-700">{vehicle.licensePlate || vehicle.vehicleNo}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">VIN</p>
+                      <p className="text-gray-700 truncate">{vehicle.vin}</p>
+                    </div>
+                  </div>
 
-          {/* Ownership & Documents */}
-          <div className="mt-3 space-y-2">
-            {vehicle.vehicleOwnership && (
-              <div className="text-sm">
-                <span className="text-gray-400">Ownership: </span>
-                <span className="text-white">{vehicle.vehicleOwnership}</span>
+                  {/* Ownership & Documents */}
+                  <div className="mt-3 space-y-2">
+                    {vehicle.vehicleOwnership && (
+                      <div className="text-sm">
+                        <span className="text-gray-500">Ownership: </span>
+                        <span className="text-gray-700">{vehicle.vehicleOwnership}</span>
+                      </div>
+                    )}
+                    {vehicle.insuranceDate && (
+                      <div className="text-sm">
+                        <span className="text-gray-500">Insurance: </span>
+                        <span className="text-gray-700">{vehicle.insuranceDate}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Documents (collapsible if many) */}
+                  <div className="mt-3">
+                    <details className="text-sm">
+                      <summary className="text-gray-500 cursor-pointer">Documents</summary>
+                      <div className="mt-1 space-y-1">
+                        {vehicle.insuranceCopy && (
+                          <div className="flex items-center text-gray-700">
+                            <FiFile className="mr-2 text-gray-500" size={14} />
+                            Insurance Copy
+                          </div>
+                        )}
+                        {vehicle.registrationFront && (
+                          <div className="flex items-center text-gray-700">
+                            <FiFile className="mr-2 text-gray-500" size={14} />
+                            Registration Front
+                          </div>
+                        )}
+                        {vehicle.registrationBack && (
+                          <div className="flex items-center text-gray-700">
+                            <FiFile className="mr-2 text-gray-500" size={14} />
+                            Registration Back
+                          </div>
+                        )}
+                        {vehicle.carNumberPhoto && (
+                          <div className="flex items-center text-gray-700">
+                            <FiFile className="mr-2 text-gray-500" size={14} />
+                            Car Number Photo
+                          </div>
+                        )}
+                      </div>
+                    </details>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="mt-3 flex justify-end space-x-3">
+                    <button
+                      className="text-blue-500 hover:text-blue-600 transition-colors"
+                      onClick={() => handleEdit(vehicle)}
+                    >
+                      <FiEdit size={18} />
+                    </button>
+                    <button
+                      className="text-red-500 hover:text-red-600 transition-colors"
+                      onClick={() => handleDelete(vehicle.id)}
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="px-6 py-4 text-center text-gray-500">
+                No vehicles found matching your search criteria.
               </div>
             )}
-            {vehicle.insuranceDate && (
-              <div className="text-sm">
-                <span className="text-gray-400">Insurance: </span>
-                <span className="text-white">{vehicle.insuranceDate}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Documents (collapsible if many) */}
-          <div className="mt-3">
-            <details className="text-sm">
-              <summary className="text-gray-400 cursor-pointer">Documents</summary>
-              <div className="mt-1 space-y-1">
-                {vehicle.insuranceCopy && (
-                  <div className="flex items-center text-white">
-                    <FiFile className="mr-2 text-gray-400" size={14} />
-                    Insurance Copy
-                  </div>
-                )}
-                {vehicle.registrationFront && (
-                  <div className="flex items-center text-white">
-                    <FiFile className="mr-2 text-gray-400" size={14} />
-                    Registration Front
-                  </div>
-                )}
-                {vehicle.registrationBack && (
-                  <div className="flex items-center text-white">
-                    <FiFile className="mr-2 text-gray-400" size={14} />
-                    Registration Back
-                  </div>
-                )}
-                {vehicle.carNumberPhoto && (
-                  <div className="flex items-center text-white">
-                    <FiFile className="mr-2 text-gray-400" size={14} />
-                    Car Number Photo
-                  </div>
-                )}
-              </div>
-            </details>
-          </div>
-
-          {/* Actions */}
-          <div className="mt-3 flex justify-end space-x-3">
-            <button
-              className="text-blue-400 hover:text-blue-300 transition-colors"
-              onClick={() => handleEdit(vehicle)}
-            >
-              <FiEdit size={18} />
-            </button>
-            <button
-              className="text-red-400 hover:text-red-300 transition-colors"
-              onClick={() => handleDelete(vehicle.id)}
-            >
-              <FiTrash2 size={18} />
-            </button>
           </div>
         </div>
-      ))
-    ) : (
-      <div className="px-6 py-4 text-center text-gray-400">
-        No vehicles found matching your search criteria.
-      </div>
-    )}
-  </div>
-</div>
-
       </div>
 
       {/* Edit Vehicle Modal */}
       {isEditModalOpen && editingVehicle && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-white">Edit Vehicle</h2>
+                <h2 className="text-xl font-bold text-gray-700">Edit Vehicle</h2>
                 <button
-                  className="text-gray-400 hover:text-gray-200 transition-colors"
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
                   onClick={() => setIsEditModalOpen(false)}
                 >
                   <FiX size={24} />
@@ -759,70 +758,70 @@ const VehiclesPage = () => {
                 <div className="space-y-4">
                   {/* Vehicle Info */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Vehicle Number</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Number</label>
                     <input
                       type="text"
                       name="vehicleNo"
                       value={editingVehicle.vehicleNo || editingVehicle.licensePlate}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Vehicle Category</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Category</label>
                     <input
                       type="text"
                       name="type"
                       value={editingVehicle.type}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Mileage</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Mileage</label>
                     <input
                       type="text"
                       name="mileage"
                       value={editingVehicle.mileage}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Fuel Type</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Fuel Type</label>
                     <input
                       type="text"
                       name="fuelType"
                       value={editingVehicle.fuelType}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   {/* Registration Info */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">VIN</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">VIN</label>
                     <input
                       type="text"
                       name="vin"
                       value={editingVehicle.vin}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Registration Date</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Registration Date</label>
                     <input
                       type="text"
                       name="registrationDate"
                       value={editingVehicle.registrationDate}
                       onChange={handleEditInputChange}
                       placeholder="MM/DD/YYYY"
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                 </div>
@@ -831,41 +830,41 @@ const VehiclesPage = () => {
                 <div className="space-y-4">
                   {/* Ownership & Insurance */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Ownership</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Ownership</label>
                     <input
                       type="text"
                       name="vehicleOwnership"
                       value={editingVehicle.vehicleOwnership}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Insurance Date</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Insurance Date</label>
                     <input
                       type="text"
                       name="insuranceDate"
                       value={editingVehicle.insuranceDate}
                       onChange={handleEditInputChange}
                       placeholder="MM/DD/YYYY"
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   {/* Documents */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Insurance Copy</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Insurance Copy</label>
                     <input
                       type="file"
                       accept=".pdf"
                       name="insuranceCopy"
                       onChange={handleEditFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                     {editingVehicle.insuranceCopy && (
-                      <div className="mt-2 p-2 bg-gray-700 rounded-md">
-                        <div className="flex items-center text-sm text-gray-300">
+                      <div className="mt-2 p-2 bg-gray-50 rounded-md">
+                        <div className="flex items-center text-sm text-gray-700">
                           <FiFile className="mr-2" size={16} />
                           <span>{typeof editingVehicle.insuranceCopy === 'string' ? 'Insurance Copy.pdf' : editingVehicle.insuranceCopy.name}</span>
                         </div>
@@ -874,16 +873,16 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Registration Front</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Registration Front</label>
                     <input
                       type="file"
                       accept="image/*"
                       name="registrationFront"
                       onChange={handleEditFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                     {editingVehicle.registrationFront && (
-                      <div className="mt-2 p-2 bg-gray-700 rounded-md">
+                      <div className="mt-2 p-2 bg-gray-50 rounded-md">
                         <img
                           src={typeof editingVehicle.registrationFront === 'string' 
                             ? editingVehicle.registrationFront 
@@ -896,16 +895,16 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Registration Back</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Registration Back</label>
                     <input
                       type="file"
                       accept="image/*"
                       name="registrationBack"
                       onChange={handleEditFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                     {editingVehicle.registrationBack && (
-                      <div className="mt-2 p-2 bg-gray-700 rounded-md">
+                      <div className="mt-2 p-2 bg-gray-50 rounded-md">
                         <img
                           src={typeof editingVehicle.registrationBack === 'string'
                             ? editingVehicle.registrationBack
@@ -918,16 +917,16 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Car Number Photo</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Car Number Photo</label>
                     <input
                       type="file"
                       accept="image/*"
                       name="carNumberPhoto"
                       onChange={handleEditFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                     {editingVehicle.carNumberPhoto && (
-                      <div className="mt-2 p-2 bg-gray-700 rounded-md">
+                      <div className="mt-2 p-2 bg-gray-50 rounded-md">
                         <img
                           src={typeof editingVehicle.carNumberPhoto === 'string'
                             ? editingVehicle.carNumberPhoto
@@ -941,12 +940,12 @@ const VehiclesPage = () => {
 
                   {/* Status */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <select
                       name="status"
                       value={editingVehicle.status}
                       onChange={handleEditInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="Available">Available</option>
                       <option value="In Use">In Use</option>
@@ -959,13 +958,13 @@ const VehiclesPage = () => {
               {/* Footer Actions */}
               <div className="mt-6 flex justify-end space-x-4">
                 <button
-                  className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 bg-gray-50 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
                   onClick={() => setIsEditModalOpen(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition-colors"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                   onClick={handleSaveEdit}
                 >
                   Save Changes
@@ -979,12 +978,12 @@ const VehiclesPage = () => {
       {/* Add Vehicle Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-white">Add New Vehicle</h2>
+                <h2 className="text-xl font-bold text-gray-700">Add New Vehicle</h2>
                 <button
-                  className="text-gray-400 hover:text-gray-200 transition-colors"
+                  className="text-gray-500 hover:text-gray-700 transition-colors"
                   onClick={() => setIsAddModalOpen(false)}
                 >
                   <FiX size={24} />
@@ -995,7 +994,7 @@ const VehiclesPage = () => {
                 {/* Left Column */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Vehicle No <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -1003,9 +1002,9 @@ const VehiclesPage = () => {
                       name="vehicleNo"
                       value={newVehicle.vehicleNo}
                       onChange={handleAddInputChange}
-                      className={`w-full px-4 py-2 bg-gray-700 border ${
-                        formErrors.licensePlate ? "border-red-500" : "border-gray-600"
-                      } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      className={`w-full px-4 py-2 bg-gray-50 border ${
+                        formErrors.licensePlate ? "border-red-500" : "border-gray-200"
+                      } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     />
                     {formErrors.licensePlate && (
                       <p className="mt-1 text-sm text-red-500 flex items-center">
@@ -1016,18 +1015,18 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Vehicle Category</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Category</label>
                     <input
                       type="text"
                       name="vehicleCategory"
                       value={newVehicle.vehicleCategory}
                       onChange={handleAddInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Brand <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -1035,9 +1034,9 @@ const VehiclesPage = () => {
                       name="brand"
                       value={newVehicle.brand}
                       onChange={handleAddInputChange}
-                      className={`w-full px-4 py-2 bg-gray-700 border ${
-                        formErrors.name ? "border-red-500" : "border-gray-600"
-                      } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      className={`w-full px-4 py-2 bg-gray-50 border ${
+                        formErrors.name ? "border-red-500" : "border-gray-200"
+                      } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     />
                     {formErrors.name && (
                       <p className="mt-1 text-sm text-red-500 flex items-center">
@@ -1048,7 +1047,7 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Model Type <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -1056,9 +1055,9 @@ const VehiclesPage = () => {
                       name="modelType"
                       value={newVehicle.modelType}
                       onChange={handleAddInputChange}
-                      className={`w-full px-4 py-2 bg-gray-700 border ${
-                        formErrors.model ? "border-red-500" : "border-gray-600"
-                      } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      className={`w-full px-4 py-2 bg-gray-50 border ${
+                        formErrors.model ? "border-red-500" : "border-gray-200"
+                      } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     />
                     {formErrors.model && (
                       <p className="mt-1 text-sm text-red-500 flex items-center">
@@ -1069,18 +1068,18 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Fuel Type</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Fuel Type</label>
                     <input
                       type="text"
                       name="fuelType"
                       value={newVehicle.fuelType}
                       onChange={handleAddInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       VIN <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -1088,9 +1087,9 @@ const VehiclesPage = () => {
                       name="vin"
                       value={newVehicle.vin}
                       onChange={handleAddInputChange}
-                      className={`w-full px-4 py-2 bg-gray-700 border ${
-                        formErrors.vin ? "border-red-500" : "border-gray-600"
-                      } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      className={`w-full px-4 py-2 bg-gray-50 border ${
+                        formErrors.vin ? "border-red-500" : "border-gray-200"
+                      } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     />
                     {formErrors.vin && (
                       <p className="mt-1 text-sm text-red-500 flex items-center">
@@ -1104,18 +1103,18 @@ const VehiclesPage = () => {
                 {/* Right Column */}
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Vehicle Ownership</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Vehicle Ownership</label>
                     <input
                       type="text"
                       name="vehicleOwnership"
                       value={newVehicle.vehicleOwnership}
                       onChange={handleAddInputChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Registration Date</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Registration Date</label>
                     <div className="grid grid-cols-3 gap-2">
                       <input
                         type="text"
@@ -1123,9 +1122,9 @@ const VehiclesPage = () => {
                         value={newVehicle.registrationMonth}
                         onChange={handleAddInputChange}
                         placeholder="MM"
-                        className={`px-4 py-2 bg-gray-700 border ${
-                          formErrors.registrationDate ? "border-red-500" : "border-gray-600"
-                        } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`px-4 py-2 bg-gray-50 border ${
+                          formErrors.registrationDate ? "border-red-500" : "border-gray-200"
+                        } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                       <input
                         type="text"
@@ -1133,9 +1132,9 @@ const VehiclesPage = () => {
                         value={newVehicle.registrationDay}
                         onChange={handleAddInputChange}
                         placeholder="DD"
-                        className={`px-4 py-2 bg-gray-700 border ${
-                          formErrors.registrationDate ? "border-red-500" : "border-gray-600"
-                        } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`px-4 py-2 bg-gray-50 border ${
+                          formErrors.registrationDate ? "border-red-500" : "border-gray-200"
+                        } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                       <input
                         type="text"
@@ -1143,9 +1142,9 @@ const VehiclesPage = () => {
                         value={newVehicle.registrationYear}
                         onChange={handleAddInputChange}
                         placeholder="YYYY"
-                        className={`px-4 py-2 bg-gray-700 border ${
-                          formErrors.registrationDate ? "border-red-500" : "border-gray-600"
-                        } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`px-4 py-2 bg-gray-50 border ${
+                          formErrors.registrationDate ? "border-red-500" : "border-gray-200"
+                        } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                     </div>
                     {formErrors.registrationDate && (
@@ -1157,7 +1156,7 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Insurance Valid Up To</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Insurance Valid Up To</label>
                     <div className="grid grid-cols-3 gap-2">
                       <input
                         type="text"
@@ -1165,9 +1164,9 @@ const VehiclesPage = () => {
                         value={newVehicle.insuranceMonth}
                         onChange={handleAddInputChange}
                         placeholder="MM"
-                        className={`px-4 py-2 bg-gray-700 border ${
-                          formErrors.insuranceDate ? "border-red-500" : "border-gray-600"
-                        } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`px-4 py-2 bg-gray-50 border ${
+                          formErrors.insuranceDate ? "border-red-500" : "border-gray-200"
+                        } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                       <input
                         type="text"
@@ -1175,9 +1174,9 @@ const VehiclesPage = () => {
                         value={newVehicle.insuranceDay}
                         onChange={handleAddInputChange}
                         placeholder="DD"
-                        className={`px-4 py-2 bg-gray-700 border ${
-                          formErrors.insuranceDate ? "border-red-500" : "border-gray-600"
-                        } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`px-4 py-2 bg-gray-50 border ${
+                          formErrors.insuranceDate ? "border-red-500" : "border-gray-200"
+                        } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                       <input
                         type="text"
@@ -1185,9 +1184,9 @@ const VehiclesPage = () => {
                         value={newVehicle.insuranceYear}
                         onChange={handleAddInputChange}
                         placeholder="YYYY"
-                        className={`px-4 py-2 bg-gray-700 border ${
-                          formErrors.insuranceDate ? "border-red-500" : "border-gray-600"
-                        } rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                        className={`px-4 py-2 bg-gray-50 border ${
+                          formErrors.insuranceDate ? "border-red-500" : "border-gray-200"
+                        } rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500`}
                       />
                     </div>
                     {formErrors.insuranceDate && (
@@ -1199,18 +1198,18 @@ const VehiclesPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Insurance Copy (PDF)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Insurance Copy (PDF)</label>
                     <input
                       type="file"
                       accept=".pdf"
                       name="insuranceCopy"
                       onChange={handleFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Registration Certificate Front (image)
                     </label>
                     <input
@@ -1218,12 +1217,12 @@ const VehiclesPage = () => {
                       accept="image/*"
                       name="registrationFront"
                       onChange={handleFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Registration Certificate Back (image)
                     </label>
                     <input
@@ -1231,18 +1230,18 @@ const VehiclesPage = () => {
                       accept="image/*"
                       name="registrationBack"
                       onChange={handleFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Car Number Photo (image)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Car Number Photo (image)</label>
                     <input
                       type="file"
                       accept="image/*"
                       name="carNumberPhoto"
                       onChange={handleFileChange}
-                      className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500"
+                      className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
                     />
                   </div>
                 </div>
@@ -1251,13 +1250,13 @@ const VehiclesPage = () => {
               {/* Footer Actions */}
               <div className="mt-6 flex justify-end space-x-4">
                 <button
-                  className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors"
+                  className="px-4 py-2 bg-gray-50 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
                   onClick={() => setIsAddModalOpen(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition-colors"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                   onClick={handleAddVehicle}
                 >
                   Submit

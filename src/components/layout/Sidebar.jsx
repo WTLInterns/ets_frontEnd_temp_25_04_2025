@@ -8,6 +8,7 @@ import {
   FiLink, FiUpload, FiSettings, FiMenu, FiChevronLeft, 
   FiChevronRight, FiX
 } from 'react-icons/fi';
+import { FaUsersViewfinder } from "react-icons/fa6";
 import { useTheme } from './ThemeProvider';
 
 const Sidebar = () => {
@@ -69,11 +70,11 @@ const Sidebar = () => {
       path: '/dashboard', 
       icon: <FiGrid className="text-purple-500 fancy-icon" size={20} /> 
     },
-    // { 
-    //   name: 'Add Drivers', 
-    //   path: '/add-drivers', 
-    //   icon: <FiUserPlus className="text-green-500 fancy-icon" size={20} /> 
-    // },
+    { 
+      name: 'Online Booking', 
+      path: '/online-booking', 
+      icon: <FaUsersViewfinder  className="text-green-500 fancy-icon" size={20} /> 
+    },
     { 
       name: 'Drivers', 
       path: '/drivers', 
@@ -89,11 +90,11 @@ const Sidebar = () => {
       path: '/vehicles', 
       icon: <FiTruck className="text-yellow-500 fancy-icon" size={20} /> 
     },
-    { 
-      name: 'Pairing Vehicle', 
-      path: '/pairing-vehicle', 
-      icon: <FiLink className="text-orange-500 fancy-icon" size={20} /> 
-    },
+    // { 
+    //   name: 'Pairing Vehicle', 
+    //   path: '/pairing-vehicle', 
+    //   icon: <FiLink className="text-orange-500 fancy-icon" size={20} /> 
+    // },
     // { 
     //   name: 'Add Employees', 
     //   path: '/add-employees', 
@@ -104,30 +105,30 @@ const Sidebar = () => {
       path: '/employees', 
       icon: <FiUsers className="text-red-500 fancy-icon" size={20} /> 
     },
-    { 
-      name: 'Pairing Employees', 
-      path: '/pairing-employees', 
-      icon: <FiLink className="text-teal-500 fancy-icon" size={20} /> 
-    },
+    // { 
+    //   name: 'Pairing Employees', 
+    //   path: '/pairing-employees', 
+    //   icon: <FiLink className="text-teal-500 fancy-icon" size={20} /> 
+    // },
     { 
       name: 'Upload Excel Sheet', 
       path: '/upload-excel', 
       icon: <FiUpload className="text-lime-500 fancy-icon" size={20} /> 
     },
-    { 
-      name: 'Settings', 
-      path: '/settings', 
-      icon: <FiSettings className="text-gray-400 fancy-icon" size={20} /> 
-    },
+    // { 
+    //   name: 'Settings', 
+    //   path: '/settings', 
+    //   icon: <FiSettings className="text-gray-400 fancy-icon" size={20} /> 
+    // },
   ];
 
   return (
     <>
       {/* Mobile Menu Toggle Button */}
       <button
-        className={`md:hidden fixed top-4 left-4 z-50 p-2 rounded-md ${
-          theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
-        } shadow-lg transition-transform ${isMobileMenuOpen ? 'transform translate-x-64' : ''}`}
+        className={`md:hidden fixed top-4 left-4 z-50 p-2 rounded-md bg-white text-gray-700 shadow-lg transition-transform ${
+          isMobileMenuOpen ? 'transform translate-x-64' : ''
+        }`}
         onClick={toggleMobileMenu}
         aria-label="Toggle mobile menu"
       >
@@ -137,7 +138,7 @@ const Sidebar = () => {
       {/* Sidebar Overlay for Mobile */}
       {isMobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm z-30 transition-opacity"
+          className="md:hidden fixed inset-0 bg-gray-700 bg-opacity-30 backdrop-blur-sm z-30 transition-opacity"
           onClick={toggleMobileMenu}
         />
       )}
@@ -145,30 +146,25 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside 
         ref={sidebarRef}
-        className={`fixed left-0 top-0 h-full transition-all duration-300 z-40 ${
-          theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'
-        } ${isMobile 
-          ? `${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} w-64`
-          : `${isExpanded ? 'w-64' : 'w-16'}`
+        className={`fixed left-0 top-0 h-full transition-all duration-300 z-40 bg-white border-r border-gray-200 ${
+          isMobile 
+            ? `${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} w-64`
+            : `${isExpanded ? 'w-64' : 'w-16'}`
         }
         shadow-xl`}
       >
         {/* Logo Area */}
-        <div className={`h-16 flex items-center justify-between px-4 border-b ${
-          theme === 'dark' ? 'border-gray-800' : 'border-gray-200'
-        }`}>
+        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
           {(isExpanded || isMobileMenuOpen) ? (
             <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-400 flex items-center justify-center text-white font-bold text-xl">
                 ETS
               </div>
-              <span className={`ml-3 font-bold text-xl ${
-                theme === 'dark' ? 'text-white' : 'text-gray-900'
-              }`}>ETS</span>
+              <span className="ml-3 font-bold text-xl text-gray-700">ETS</span>
             </div>
           ) : (
             !isMobile && (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-white font-bold text-xl mx-auto">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-400 flex items-center justify-center text-white font-bold text-xl mx-auto">
                 E
               </div>
             )
@@ -177,11 +173,7 @@ const Sidebar = () => {
           {/* Toggle Button (Desktop only) */}
           {!isMobile && (
             <button
-              className={`p-1 rounded-full ${
-                theme === 'dark' 
-                  ? 'text-white hover:bg-gray-700' 
-                  : 'text-gray-600 hover:bg-gray-100'
-              }`}
+              className="p-1 rounded-full text-gray-600 hover:bg-gray-100"
               onClick={toggleSidebar}
               aria-label={isExpanded ? 'Collapse sidebar' : 'Expand sidebar'}
             >
@@ -202,12 +194,8 @@ const Sidebar = () => {
                     href={item.path}
                     className={`flex items-center py-2 px-3 rounded-lg transition-colors
                               ${isActive 
-                                ? theme === 'dark'
-                                  ? 'bg-gray-800 text-white'
-                                  : 'bg-gray-100 text-gray-900'
-                                : theme === 'dark'
-                                  ? 'text-gray-400 hover:text-white hover:bg-gray-800'
-                                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                                ? 'bg-gray-100 text-gray-700'
+                                : 'text-gray-600 hover:text-gray-700 hover:bg-gray-50'
                               }
                               ${(isExpanded || isMobileMenuOpen) ? '' : 'justify-center'}`}
                     title={!(isExpanded || isMobileMenuOpen) ? item.name : ''}

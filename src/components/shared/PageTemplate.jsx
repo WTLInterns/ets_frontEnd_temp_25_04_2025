@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 // Lazy-loaded PageLayout component
 const PageLayout = dynamic(() => import('@/components/layout/PageLayout'), {
-  loading: () => <div className="h-screen w-full bg-black animate-pulse"></div>,
+  loading: () => <div className="h-screen w-full  animate-pulse"></div>,
   ssr: false
 });
 

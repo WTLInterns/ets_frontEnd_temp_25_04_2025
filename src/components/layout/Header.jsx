@@ -11,15 +11,15 @@ const Header = () => {
   if (!mounted) return null;
 
   return (
-    <header className={`sticky top-0 z-30 flex items-center justify-between h-16 px-4 md:px-6 ${theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-b shadow-lg transition-colors duration-200`}>
+    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 md:px-6 bg-white border-b border-gray-200 shadow-lg transition-colors duration-200">
       {/* Search */}
       <div className="relative w-full max-w-md">
         {/* <input
           type="text"
           placeholder="Search..."
-          className="w-full h-10 pl-10 pr-4 text-sm bg-gray-800 text-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 border border-gray-700"
+          className="w-full h-10 pl-10 pr-4 text-sm bg-gray-50 text-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 border border-gray-200"
         />
-        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 fancy-icon" /> */}
+        <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" /> */}
       </div>
 
       {/* Actions */}
@@ -27,26 +27,18 @@ const Header = () => {
         {/* Theme Toggle */}
         {/* <button
           onClick={toggleTheme}
-          className={`p-2 rounded-full ${
-            theme === 'dark'
-              ? 'bg-gray-800 text-gray-300 hover:text-white border-gray-700'
-              : 'bg-gray-100 text-gray-700 hover:text-gray-900 border-gray-200'
-          } border transition-colors duration-200`}
+          className="p-2 rounded-full bg-gray-50 text-gray-600 hover:text-gray-700 border border-gray-200 transition-colors duration-200"
           aria-label={`Toggle ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-          {theme === 'dark' ? <FiSun size={20} className="fancy-icon" /> : <FiMoon size={20} className="fancy-icon" />}
+          {theme === 'dark' ? <FiSun size={20} /> : <FiMoon size={20} />}
         </button> */}
 
         {/* Notifications */}
-        <button className={`relative p-2 rounded-full ${
-          theme === 'dark'
-            ? 'bg-gray-800 text-gray-300 hover:text-white border-gray-700'
-            : 'bg-gray-100 text-gray-700 hover:text-gray-900 border-gray-200'
-          } border`}>
-          <FiBell size={20} className="fancy-icon" />
+        <button className="relative p-2 rounded-full bg-gray-50 text-gray-600 hover:text-gray-700 border border-gray-200">
+          <FiBell size={20} />
           <span className="absolute top-1 right-1 flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-500 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-purple-600"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-purple-500"></span>
           </span>
         </button>
 
@@ -54,63 +46,43 @@ const Header = () => {
         <div className="relative">
           <button
             onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 overflow-hidden"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-400 overflow-hidden"
           >
-            <FiUser size={20} className="text-white fancy-icon" />
+            <FiUser size={20} className="text-white" />
           </button>
 
           {/* User Menu Modal */}
           {isUserMenuOpen && (
-            <div className={`absolute right-0 mt-2 w-64 rounded-lg shadow-lg py-2 z-50 border ${
-              theme === 'dark'
-                ? 'bg-gray-900 border-gray-800'
-                : 'bg-white border-gray-200'
-              }`}>
-              <div className={`px-4 py-3 border-b ${theme === 'dark' ? 'border-gray-800' : 'border-gray-200'}`}>
+            <div className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg py-2 z-50 border border-gray-200 bg-white">
+              <div className="px-4 py-3 border-b border-gray-200">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 mr-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center text-white">
-                      <FiUser size={16} className="fancy-icon" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-400 flex items-center justify-center text-white">
+                      <FiUser size={16} />
                     </div>
                   </div>
                   <div>
-                    <div className={theme === 'dark' ? 'font-medium text-white' : 'font-medium text-gray-900'}>Admin User</div>
-                    <div className={theme === 'dark' ? 'text-sm text-gray-400' : 'text-sm text-gray-600'}>admin@example.com</div>
+                    <div className="font-medium text-gray-700">Admin User</div>
+                    <div className="text-sm text-gray-500">admin@example.com</div>
                   </div>
                 </div>
               </div>
               <div className="py-1">
-                <button className={`block w-full text-left px-4 py-2 text-sm ${
-                  theme === 'dark'
-                    ? 'text-gray-300 hover:bg-gray-800'
-                    : 'text-gray-700 hover:bg-gray-100'
-                  } transition-colors`}>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-gray-700 hover:bg-gray-50 transition-colors">
                   Profile
                 </button>
-                <button className={`block w-full text-left px-4 py-2 text-sm ${
-                  theme === 'dark'
-                    ? 'text-gray-300 hover:bg-gray-800'
-                    : 'text-gray-700 hover:bg-gray-100'
-                  } transition-colors`}>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-gray-700 hover:bg-gray-50 transition-colors">
                   Settings
                 </button>
-                <button className={`block w-full text-left px-4 py-2 text-sm ${
-                  theme === 'dark'
-                    ? 'text-gray-300 hover:bg-gray-800'
-                    : 'text-gray-700 hover:bg-gray-100'
-                  } transition-colors`}>
+                <button className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-gray-700 hover:bg-gray-50 transition-colors">
                   Logout
                 </button>
               </div>
               <button
                 onClick={() => setIsUserMenuOpen(false)}
-                className={`absolute top-2 right-2 ${
-                  theme === 'dark'
-                    ? 'text-gray-400 hover:text-gray-200'
-                    : 'text-gray-500 hover:text-gray-700'
-                  }`}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
               >
-                <FiX size={16} className="fancy-icon" />
+                <FiX size={16} />
               </button>
             </div>
           )}
