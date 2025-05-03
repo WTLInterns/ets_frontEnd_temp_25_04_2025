@@ -57,7 +57,7 @@ const PageLayout = ({ children, title, isDashboard = false }) => {
 
   if (!mounted) {
     return (
-      <div className="flex h-screen bg-black">
+      <div className="flex h-screen bg-white">
         <div className="fixed left-0 top-0 w-20 h-screen bg-gray-900"></div>
         <div className="flex-1 pl-20">
           <div className="h-16 bg-gray-900"></div>
@@ -71,7 +71,7 @@ const PageLayout = ({ children, title, isDashboard = false }) => {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-black">
+    <div className="flex h-screen overflow-hidden bg-white">
       {/* Fixed Sidebar */}
       <div className="fixed left-0 top-0 h-full z-40">
         <Suspense fallback={<div className="fixed left-0 top-0 w-20 h-screen bg-gray-900 animate-pulse"></div>}>
@@ -95,7 +95,7 @@ const PageLayout = ({ children, title, isDashboard = false }) => {
         {/* Page Content */}
         <main 
           className={`flex-1 p-4 md:p-6 overflow-auto ${
-            isDashboard ? 'bg-black' : 'bg-black'
+            isDashboard ? 'bg-white' : 'bg-white'
           }`}
         >
           {title && (

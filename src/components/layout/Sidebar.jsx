@@ -138,7 +138,7 @@ const Sidebar = () => {
       {/* Sidebar Overlay for Mobile */}
       {isMobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-gray-700 bg-opacity-30 backdrop-blur-sm z-30 transition-opacity"
+          className="md:hidden fixed inset-0 bg-gray-700 bg-opacity-30 backdrop-bg-white-sm z-30 transition-opacity"
           onClick={toggleMobileMenu}
         />
       )}

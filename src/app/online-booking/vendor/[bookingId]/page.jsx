@@ -84,8 +84,24 @@ const BookingDetailsPage = ({ params }) => {
     }
   ]);
 
-  // This would typically come from an API call using the bookingId
-  const [bookingDetails] = useState({
+  const [cabs] = useState([
+    {
+      id: 1,
+      vehicleName: 'BMW',
+      vehicleRCNo: 'fdsf',
+      otherDetails: 's',
+      status: 'COMPLETED'
+    },
+    {
+      id: 2,
+      vehicleName: 'dsfdsfds',
+      vehicleRCNo: 'sdfds',
+      otherDetails: 'sdf',
+      status: 'PENDING'
+    }
+  ]);
+
+  const [bookingDetails, setBookingDetails] = useState({
     bookingId: 'WTL1745846968701',
     name: 'testing',
     from: 'Pune, Maharashtra, India',
@@ -107,31 +123,17 @@ const BookingDetailsPage = ({ params }) => {
       driverId: '5678',
       driverName: 'John Doe',
       contactNo: '+1234567890'
-    }
+    },
+    date: "11/22/2021",
+    status: "Completed"
   });
+
   const tripData = [
     { date: "11/22/2021", status: "Completed" },
     { date: "11/15/2021", status: "Pending" },
     { date: "12/05/2021", status: "Cancelled" },
     { date: "01/10/2022", status: "Upcoming" }
   ];
-
-  const [cabs] = useState([
-    {
-      id: 1,
-      vehicleName: 'BMW',
-      vehicleRCNo: 'fdsf',
-      otherDetails: 's',
-      status: 'COMPLETED'
-    },
-    {
-      id: 2,
-      vehicleName: 'dsfdsfds',
-      vehicleRCNo: 'sdfds',
-      otherDetails: 'sdf',
-      status: 'PENDING'
-    }
-  ]);
 
   const handleAssignVendor = (vendorId) => {
     console.log('Assigning vendor:', vendorId);
@@ -160,7 +162,7 @@ const BookingDetailsPage = ({ params }) => {
 
   return (
     <PageLayout title="Booking Details">
-      <div className="min-h-screen p-4 md:p-8 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen p-4 md:p-8 bg-gray-50 dark:bg-gray-100 transition-colors duration-300">
         <div className="max-w-3xl mx-auto">
           {/* Success Message */}
           {showSuccess && (
@@ -192,110 +194,115 @@ const BookingDetailsPage = ({ params }) => {
           </div>
 
           {/* Client's Booking Summary */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
+          <div className="bg-white dark:bg-gray-200 rounded-lg shadow-md overflow-hidden mb-6">
             <div className="p-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Client's Booking Summary</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">Client's Booking Summary</h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Booking ID</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.bookingId}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.bookingId}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Name</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.name}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.name}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">From</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.from}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.from}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">To</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.to}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.to}</p>
                 </div>
-             
-<div className="space-y-2">
-  <p className="text-sm text-gray-500 dark:text-gray-400">Trip Type</p>
-  <div className="flex items-center gap-2">
-    <select 
-      className="text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      value={`${bookingDetails.date} - ${bookingDetails.status}`}
-      onChange={(e) => {
-        const [date, status] = e.target.value.split(" - ");
-        setBookingDetails({...bookingDetails, date, status});
-      }}
-    >
-      {tripData.map((trip, index) => (
-        <option 
-          key={index} 
-          value={`${trip.date} - ${trip.status}`}
-        >
-          {trip.date} - {trip.status}
-        </option>
-      ))}
-    </select>
-    
-    {/* Status indicator */}
-    {bookingDetails.status === "Completed" && (
-      <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-        Completed
-      </span>
-    )}
-    {bookingDetails.status === "Pending" && (
-      <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-        Pending
-      </span>
-    )}
-    {bookingDetails.status === "Cancelled" && (
-      <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-        Cancelled
-      </span>
-    )}
-    {bookingDetails.status === "Upcoming" && (
-      <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-        Upcoming
-      </span>
-    )}
-  </div>
-</div>
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Trip Type</p>
+                  <div className="flex items-center gap-2">
+                    <select 
+                      className="text-sm font-medium text-gray-900 bg-gray-100 dark:bg-gray-200 rounded-md px-3 py-1 border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={bookingDetails.status}
+                      onChange={(e) => {
+                        const selectedTrip = tripData.find(trip => trip.status === e.target.value);
+                        if (selectedTrip) {
+                          setBookingDetails(prev => ({
+                            ...prev,
+                            date: selectedTrip.date,
+                            status: selectedTrip.status
+                          }));
+                        }
+                      }}
+                    >
+                      {tripData.map((trip, index) => (
+                        <option 
+                          key={index} 
+                          value={trip.status}
+                        >
+                          {trip.date} - {trip.status}
+                        </option>
+                      ))}
+                    </select>
+                    
+                    {/* Status indicator */}
+                    {bookingDetails.status === "Completed" && (
+                      <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                        Completed
+                      </span>
+                    )}
+                    {bookingDetails.status === "Pending" && (
+                      <span className="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
+                        Pending
+                      </span>
+                    )}
+                    {bookingDetails.status === "Cancelled" && (
+                      <span className="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                        Cancelled
+                      </span>
+                    )}
+                    {bookingDetails.status === "Upcoming" && (
+                      <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                        Upcoming
+                      </span>
+                    )}
+                  </div>
+                </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Start Date</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.startDate}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.startDate}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Return Date</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.returnDate}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.returnDate}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Time</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.time}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.time}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Amount</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">₹{bookingDetails.amount}</p>
+                  <p className="text-sm font-medium text-gray-900">₹{bookingDetails.amount}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">GST</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">₹{bookingDetails.gst}</p>
+                  <p className="text-sm font-medium text-gray-900">₹{bookingDetails.gst}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Service Charge</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">₹{bookingDetails.serviceCharge}</p>
+                  <p className="text-sm font-medium text-gray-900">₹{bookingDetails.serviceCharge}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Car</p>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">{bookingDetails.car}</p>
+                  <p className="text-sm font-medium text-gray-900">{bookingDetails.car}</p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Assign Cab Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
+          <div className="bg-white dark:bg-gray-200 rounded-lg shadow-md overflow-hidden mb-6">
             <button
               onClick={() => setIsCabOpen(!isCabOpen)}
               className="w-full px-6 py-4 flex justify-between items-center text-left"
             >
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Assign Cab</h2>
+              <h2 className="text-lg font-semibold text-gray-900 ">Assign Cab</h2>
               {isCabOpen ? <FiChevronUp /> : <FiChevronDown />}
             </button>
             {isCabOpen && (
@@ -304,15 +311,15 @@ const BookingDetailsPage = ({ params }) => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Cab ID</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedCab.id}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedCab.id}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Vehicle Name</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedCab.vehicleName}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedCab.vehicleName}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Vehicle RC.No</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedCab.vehicleRCNo}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedCab.vehicleRCNo}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Status</p>
@@ -335,12 +342,12 @@ const BookingDetailsPage = ({ params }) => {
           </div>
 
           {/* Assign Driver Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white dark:bg-gray-200 rounded-lg shadow-md overflow-hidden">
             <button
               onClick={() => setIsDriverOpen(!isDriverOpen)}
               className="w-full px-6 py-4 flex justify-between items-center text-left"
             >
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Assign Driver</h2>
+              <h2 className="text-lg font-semibold text-gray-900 ">Assign Driver</h2>
               {isDriverOpen ? <FiChevronUp /> : <FiChevronDown />}
             </button>
             {isDriverOpen && (
@@ -349,19 +356,19 @@ const BookingDetailsPage = ({ params }) => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Driver ID</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedDriver.id}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedDriver.id}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Driver Name</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedDriver.driverName}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedDriver.driverName}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Contact No</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedDriver.contactNo}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedDriver.contactNo}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{assignedDriver.email}</p>
+                      <p className="text-sm font-medium text-gray-900 ">{assignedDriver.email}</p>
                     </div>
                   </div>
                 ) : (
@@ -377,11 +384,11 @@ const BookingDetailsPage = ({ params }) => {
 
       {/* Vendor Modal */}
       {isVendorModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full mx-4">
+        <div className="fixed inset-0 bg-gradient-to-b bg-black/50 to-transparent backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-200 rounded-lg shadow-xl max-w-4xl w-full mx-4">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Assign Vendor</h2>
+                <h2 className="text-xl font-semibold text-gray-900 ">Assign Vendor</h2>
               </div>
 
               <div className="overflow-x-auto">
@@ -408,25 +415,25 @@ const BookingDetailsPage = ({ params }) => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="bg-white dark:bg-gray-200 divide-y divide-gray-200 dark:divide-gray-700">
                     {vendors.map((vendor) => (
-                      <tr key={vendor.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <tr key={vendor.id} className="hover:bg-gray-50 dark:hover:bg-gray-400">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {vendor.id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {vendor.companyName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {vendor.contactNo}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {vendor.email}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {vendor.address}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           <button
                             onClick={() => handleAssignVendor(vendor.id)}
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
@@ -455,11 +462,11 @@ const BookingDetailsPage = ({ params }) => {
 
       {/* Driver Modal */}
       {isDriverModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full mx-4">
+        <div className="fixed inset-0 bg-gradient-to-b bg-black/50 to-transparent backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-200 rounded-lg shadow-xl max-w-4xl w-full mx-4">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Assign Driver</h2>
+                <h2 className="text-xl font-semibold text-gray-900 ">Assign Driver</h2>
               </div>
 
               <div className="overflow-x-auto">
@@ -486,25 +493,25 @@ const BookingDetailsPage = ({ params }) => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="bg-white dark:bg-gray-200 divide-y divide-gray-200 dark:divide-gray-700">
                     {drivers.map((driver) => (
-                      <tr key={driver.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <tr key={driver.id} className="hover:bg-gray-50 dark:hover:bg-gray-400">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {driver.id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {driver.driverName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {driver.contactNo}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {driver.alternateContactNo}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {driver.email}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           <button
                             onClick={() => handleAssignDriver(driver)}
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
@@ -533,11 +540,11 @@ const BookingDetailsPage = ({ params }) => {
 
       {/* Cab Modal */}
       {isCabModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full mx-4">
+        <div className="fixed inset-0 bg-gradient-to-b bg-black/50 to-transparent backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-200 rounded-lg shadow-xl max-w-4xl w-full mx-4">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Assign Admin Cab</h2>
+                <h2 className="text-xl font-semibold text-gray-900 ">Assign Admin Cab</h2>
               </div>
 
               <div className="overflow-x-auto">
@@ -564,19 +571,19 @@ const BookingDetailsPage = ({ params }) => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="bg-white dark:bg-gray-200 divide-y divide-gray-200 dark:divide-gray-700">
                     {cabs.map((cab) => (
-                      <tr key={cab.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <tr key={cab.id} className="hover:bg-gray-50 dark:hover:bg-gray-400">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {cab.id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {cab.vehicleName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {cab.vehicleRCNo}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           {cab.otherDetails}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -588,7 +595,7 @@ const BookingDetailsPage = ({ params }) => {
                             {cab.status}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                           <button
                             onClick={() => handleAssignCab(cab)}
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 font-medium"

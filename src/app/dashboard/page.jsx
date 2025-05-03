@@ -11,7 +11,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointE
 
 // Lazy-loaded components with loading states
 const PageLayout = dynamic(() => import('@/components/layout/PageLayout'), {
-  loading: () => <div className="h-screen w-full bg-black animate-pulse"></div>,
+  loading: () => <div className="h-screen w-full bg-white animate-pulse"></div>,
   ssr: false
 });
 

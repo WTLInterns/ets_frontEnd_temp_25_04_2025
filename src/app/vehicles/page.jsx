@@ -740,7 +740,7 @@ const VehiclesPage = () => {
 
       {/* Edit Vehicle Modal */}
       {isEditModalOpen && editingVehicle && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-gradient-to-b bg-black/50 to-transparent backdrop-blur-md bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
@@ -977,7 +977,7 @@ const VehiclesPage = () => {
 
       {/* Add Vehicle Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-gradient-to-b bg-black/50 to-transparent backdrop-blur-md bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-screen overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">

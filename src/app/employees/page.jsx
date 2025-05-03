@@ -1,134 +1,179 @@
-'use client';
+"use client"
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-import { FiSearch, FiFilter, FiPlus, FiEdit, FiTrash2, FiUser, FiMail, FiPhone, FiMapPin, FiClock, FiX, FiCheck } from 'react-icons/fi';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useState, useEffect, useRef } from "react"
+import dynamic from "next/dynamic"
+import { FiSearch, FiPlus, FiEdit, FiTrash2, FiX, FiCheck } from "react-icons/fi"
 
-const PageLayout = dynamic(() => import('@/components/layout/PageLayout'), {
+const PageLayout = dynamic(() => import("@/components/layout/PageLayout"), {
   loading: () => <div className="h-screen bg-gray-100 dark:bg-primary animate-pulse"></div>,
-  ssr: false
-});
+  ssr: false,
+})
 
 // Sample employee data
 const EMPLOYEES_DATA = [
   {
     id: 1,
-    name: 'Alex Johnson',
-    phone: '+1 (555) 123-4567',
-    gender: 'Male',
-    email: 'alex.johnson@example.com',
-    pickupLocation: '123 Main St',
-    dropLocation: '456 Market St',
-    shiftTime: '09:00',
+    name: "Alex Johnson",
+    phone: "+1 (555) 123-4567",
+    gender: "Male",
+    email: "alex.johnson@example.com",
+    pickupLocation: "123 Main St",
+    dropLocation: "456 Market St",
+    shiftTime: "09:00",
   },
   // ... you can keep or remove other sample data
-];
+]
 
-// Employee Form Modal Component
-const EmployeeFormModal = ({ isOpen, onClose, onSave, employee = null, title }) => {
-  const isEditMode = !!employee;
-  
+// Add Employee Form Component
+const AddEmployeeForm = ({ isOpen, onClose, onSave }) => {
   const initialFormState = {
-    name: '',
-    phone: '',
-    gender: 'Male',
-    email: '',
-    pickupLocation: '',
-    dropLocation: '',
-    shiftTime: '',
-  };
-      
-  const [formData, setFormData] = useState(initialFormState);
+    firstName: "",
+    lastName: "",
+    gender: "Male",
+    email: "",
+    mobileNo: "",
+    password: "",
+    pickupLocation: "",
+    dropLocation: "",
+    shiftTime: "",
+  }
 
-  // Reset form data when modal opens/closes or employee changes
+  const [formData, setFormData] = useState(initialFormState)
+  const pickupInputRef = useRef(null)
+  const dropInputRef = useRef(null)
+  const pickupAutocompleteRef = useRef(null)
+  const dropAutocompleteRef = useRef(null)
+
   useEffect(() => {
-    if (!isOpen) {
-      setFormData(initialFormState);
-      return;
-    }
+    if (isOpen) {
+      // Load Google Places API script
+      const script = document.createElement('script')
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w&libraries=places`
+      script.async = true
+      script.defer = true
+      document.head.appendChild(script)
 
-    if (isEditMode && employee) {
-      setFormData({
-        name: employee.name || '',
-        phone: employee.phone || '',
-        gender: employee.gender || 'Male',
-        email: employee.email || '',
-        pickupLocation: employee.pickupLocation || '',
-        dropLocation: employee.dropLocation || '',
-        shiftTime: employee.shiftTime || '',
-      });
-    } else {
-      setFormData(initialFormState);
+      script.onload = () => {
+        // Initialize autocomplete for pickup location
+        if (pickupInputRef.current) {
+          pickupAutocompleteRef.current = new window.google.maps.places.Autocomplete(
+            pickupInputRef.current,
+            {
+              types: ['geocode', 'establishment'],
+              componentRestrictions: { country: 'in' }
+            }
+          )
+          pickupAutocompleteRef.current.addListener('place_changed', () => {
+            const place = pickupAutocompleteRef.current.getPlace()
+            setFormData(prev => ({
+              ...prev,
+              pickupLocation: place.formatted_address
+            }))
+          })
+        }
+
+        // Initialize autocomplete for drop location
+        if (dropInputRef.current) {
+          dropAutocompleteRef.current = new window.google.maps.places.Autocomplete(
+            dropInputRef.current,
+            {
+              types: ['geocode', 'establishment'],
+              componentRestrictions: { country: 'in' }
+            }
+          )
+          dropAutocompleteRef.current.addListener('place_changed', () => {
+            const place = dropAutocompleteRef.current.getPlace()
+            setFormData(prev => ({
+              ...prev,
+              dropLocation: place.formatted_address
+            }))
+          })
+        }
+      }
+
+      return () => {
+        document.head.removeChild(script)
+      }
     }
-  }, [isOpen, isEditMode]);
+  }, [isOpen])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Prepare employee data
-    const updatedEmployee = {
-      id: isEditMode ? employee.id : Date.now(),
-      ...formData
-    };
-    
-    onSave(updatedEmployee, isEditMode);
-    onClose();
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await fetch("http://localhost:8081/users/createUser", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
 
-  if (!isOpen) return null;
+      if (!response.ok) {
+        throw new Error("Failed to create user")
+      }
+
+      const newUser = await response.json()
+      onSave(newUser, false)
+      onClose()
+    } catch (error) {
+      console.error("Error creating user:", error)
+      // You might want to show an error toast here
+    }
+  }
+
+  if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-gray-900 border border-gray-800 rounded-lg shadow-lg w-full max-w-5xl">
-        <div className="flex justify-between items-center border-b border-gray-800 p-4">
-          <h2 className="text-xl font-semibold text-white">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-b bg-black/50 to-transparent backdrop-blur-md bg-opacity-40">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg w-full max-w-5xl">
+        <div className="flex justify-between items-center border-b border-gray-200 p-4">
+          <h2 className="text-xl font-semibold text-gray-900">Add New Employee</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <FiX size={24} />
           </button>
         </div>
-        
+
         <div className="p-6">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your Name"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter First Name"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
                 <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your Phone Number"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Last Name"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Gender</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
                 <select
                   name="gender"
                   value={formData.gender}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="Male">Male</option>
@@ -138,62 +183,90 @@ const EmployeeFormModal = ({ isOpen, onClose, onSave, employee = null, title }) 
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your Email"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Email"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Pickup Location</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
                 <input
+                  type="tel"
+                  name="mobileNo"
+                  value={formData.mobileNo}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Mobile Number"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Password"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pickup Location</label>
+                <input
+                  ref={pickupInputRef}
                   type="text"
                   name="pickupLocation"
                   value={formData.pickupLocation}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your Pickup Location"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Pickup Location"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Drop Location</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Drop Location</label>
                 <input
+                  ref={dropInputRef}
                   type="text"
                   name="dropLocation"
                   value={formData.dropLocation}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
-                  placeholder="Enter your Drop Location"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Drop Location"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Shift Time</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Shift Time</label>
                 <input
                   type="time"
                   name="shiftTime"
                   value={formData.shiftTime}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-gray-700 bg-gray-800 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-6 border-t border-gray-800 mt-6">
+            <div className="flex justify-end pt-6 border-t border-gray-200 mt-6">
               <button
                 type="button"
                 onClick={onClose}
-                className="mr-4 px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
+                className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
@@ -201,101 +274,445 @@ const EmployeeFormModal = ({ isOpen, onClose, onSave, employee = null, title }) 
                 type="submit"
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
               >
-                {isEditMode ? 'Update' : 'Submit'}
+                Add Employee
               </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
+
+// Edit Employee Form Component
+const EditEmployeeForm = ({ isOpen, onClose, onSave, employee }) => {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    gender: "Male",
+    email: "",
+    mobileNo: "",
+    password: "",
+    pickupLocation: "",
+    dropLocation: "",
+    shiftTime: "",
+  })
+
+  const pickupInputRef = useRef(null)
+  const dropInputRef = useRef(null)
+  const pickupAutocompleteRef = useRef(null)
+  const dropAutocompleteRef = useRef(null)
+
+  useEffect(() => {
+    if (isOpen && employee?.id) {
+      const fetchUserDetails = async () => {
+        try {
+          const response = await fetch(`http://localhost:8081/users/getUserId/${employee.id}`)
+          if (!response.ok) {
+            throw new Error("Failed to fetch user details")
+          }
+          const userData = await response.json()
+          setFormData({
+            firstName: userData.firstName || "",
+            lastName: userData.lastName || "",
+            gender: userData.gender || "Male",
+            email: userData.email || "",
+            mobileNo: userData.mobileNo || "",
+            password: userData.password || "",
+            pickupLocation: userData.pickupLocation || "",
+            dropLocation: userData.dropLocation || "",
+            shiftTime: userData.shiftTime || "",
+          })
+        } catch (error) {
+          console.error("Error fetching user details:", error)
+        }
+      }
+
+      fetchUserDetails()
+    }
+  }, [isOpen, employee?.id])
+
+  useEffect(() => {
+    if (isOpen) {
+      // Load Google Places API script
+      const script = document.createElement('script')
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyCelDo4I5cPQ72TfCTQW-arhPZ7ALNcp8w&libraries=places`
+      script.async = true
+      script.defer = true
+      document.head.appendChild(script)
+
+      script.onload = () => {
+        // Initialize autocomplete for pickup location
+        if (pickupInputRef.current) {
+          pickupAutocompleteRef.current = new window.google.maps.places.Autocomplete(
+            pickupInputRef.current,
+            {
+              types: ['geocode', 'establishment'],
+              componentRestrictions: { country: 'in' }
+            }
+          )
+          pickupAutocompleteRef.current.addListener('place_changed', () => {
+            const place = pickupAutocompleteRef.current.getPlace()
+            setFormData(prev => ({
+              ...prev,
+              pickupLocation: place.formatted_address
+            }))
+          })
+        }
+
+        // Initialize autocomplete for drop location
+        if (dropInputRef.current) {
+          dropAutocompleteRef.current = new window.google.maps.places.Autocomplete(
+            dropInputRef.current,
+            {
+              types: ['geocode', 'establishment'],
+              componentRestrictions: { country: 'in' }
+            }
+          )
+          dropAutocompleteRef.current.addListener('place_changed', () => {
+            const place = dropAutocompleteRef.current.getPlace()
+            setFormData(prev => ({
+              ...prev,
+              dropLocation: place.formatted_address
+            }))
+          })
+        }
+      }
+
+      return () => {
+        document.head.removeChild(script)
+      }
+    }
+  }, [isOpen])
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await fetch(`http://localhost:8081/users/updateUser/${employee.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          gender: formData.gender,
+          email: formData.email,
+          mobileNo: formData.mobileNo,
+          password: formData.password,
+          pickupLocation: formData.pickupLocation,
+          dropLocation: formData.dropLocation,
+          shiftTime: formData.shiftTime
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to update user")
+      }
+
+      const updatedUser = await response.json()
+      onSave(updatedUser, true)
+      onClose()
+    } catch (error) {
+      console.error("Error updating user:", error)
+      // You might want to show an error toast here
+    }
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg w-full max-w-5xl">
+        <div className="flex justify-between items-center border-b border-gray-200 p-4">
+          <h2 className="text-xl font-semibold text-gray-900">Edit Employee: {employee?.firstName} {employee?.lastName}</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <FiX size={24} />
+          </button>
+        </div>
+
+        <div className="p-6">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter First Name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Last Name"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
+                <input
+                  type="tel"
+                  name="mobileNo"
+                  value={formData.mobileNo}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Mobile Number"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Password"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pickup Location</label>
+                <input
+                  ref={pickupInputRef}
+                  type="text"
+                  name="pickupLocation"
+                  value={formData.pickupLocation}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Pickup Location"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Drop Location</label>
+                <input
+                  ref={dropInputRef}
+                  type="text"
+                  name="dropLocation"
+                  value={formData.dropLocation}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter Drop Location"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Shift Time</label>
+                <input
+                  type="time"
+                  name="shiftTime"
+                  value={formData.shiftTime}
+                  onChange={handleChange}
+                  className="w-full rounded-md border border-gray-300 bg-white text-gray-900 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-6 border-t border-gray-200 mt-6">
+              <button
+                type="button"
+                onClick={onClose}
+                className="mr-4 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                Update Employee
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 // Toast Notification Component
 const Toast = ({ message, type, onClose }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose();
-    }, 3000);
+      onClose()
+    }, 3000)
 
-    return () => clearTimeout(timer);
-  }, [onClose]);
+    return () => clearTimeout(timer)
+  }, [onClose])
 
   return (
     <div className="fixed top-4 right-4 z-50 flex items-center bg-gray-900 border border-gray-700 rounded-lg shadow-lg px-4 py-3">
-      {type === 'success' && (
-        <FiCheck className="text-green-400 mr-2" size={20} />
-      )}
+      {type === "success" && <FiCheck className="text-green-400 mr-2" size={20} />}
+      {type === "error" && <FiX className="text-red-400 mr-2" size={20} />}
       <p className="text-white">{message}</p>
     </div>
-  );
-};
+  )
+}
 
 const EmployeesPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [employees, setEmployees] = useState(EMPLOYEES_DATA);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEmployee, setEditingEmployee] = useState(null);
-  const [modalTitle, setModalTitle] = useState('Add New Employee');
-  const [toast, setToast] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("")
+  const [employees, setEmployees] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editingEmployee, setEditingEmployee] = useState(null)
+  const [toast, setToast] = useState(null)
 
   // Show toast notification
-  const showToast = (message, type = 'success') => {
-    setToast({ message, type });
-  };
+  const showToast = (message, type = "success") => {
+    setToast({ message, type })
+  }
 
   // Hide toast notification
   const hideToast = () => {
-    setToast(null);
-  };
+    setToast(null)
+  }
 
   // Filter employees based on search term
-  const filteredEmployees = employees.filter(employee => {
-    const matchesSearch = 
-      employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      employee.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
+  const filteredEmployees = employees.filter((employee) => {
+    const matchesSearch =
+      (employee.name?.toLowerCase() || '').includes(searchTerm.toLowerCase()) ||
+      (employee.email?.toLowerCase() || '').includes(searchTerm.toLowerCase());
+  
     return matchesSearch;
   });
+  
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this employee?')) {
-      setEmployees(employees.filter(employee => employee.id !== id));
-      showToast('Employee deleted successfully');
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this employee?")) {
+      try {
+        const response = await fetch(`http://localhost:8081/users/deleteById/${id}`, {
+          method: "DELETE",
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to delete employee")
+        }
+
+        // Update the local state to remove the deleted employee
+        setEmployees(employees.filter((employee) => employee.id !== id))
+        showToast("Employee deleted successfully")
+      } catch (error) {
+        console.error("Error deleting employee:", error)
+        showToast("Failed to delete employee", "error")
+      }
     }
-  };
+  }
 
   const handleOpenAddModal = () => {
-    setEditingEmployee(null);
-    setModalTitle('Add New Employee');
-    setIsModalOpen(true);
-  };
+    setIsAddModalOpen(true)
+  }
 
   const handleOpenEditModal = (employee) => {
-    setEditingEmployee(employee);
-    setModalTitle(`Edit Employee: ${employee.name}`);
-    setIsModalOpen(true);
-  };
+    setEditingEmployee(employee)
+    setIsEditModalOpen(true)
+  }
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setEditingEmployee(null);
-  };
+  const handleCloseAddModal = () => {
+    setIsAddModalOpen(false)
+  }
 
-  const handleSaveEmployee = (employeeData, isEdit) => {
-    if (isEdit) {
-      // Update existing employee
-      setEmployees(employees.map(emp => 
-        emp.id === employeeData.id ? employeeData : emp
-      ));
-      showToast('Employee updated successfully');
-    } else {
-      // Add new employee
-      setEmployees([...employees, employeeData]);
-      showToast('Employee added successfully');
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false)
+    setEditingEmployee(null)
+  }
+
+  const handleSaveEmployee = async (employeeData, isEdit) => {
+    try {
+      if (isEdit) {
+        // Update existing employee
+        // You would typically make an API call here to update the employee
+        // For now, we'll just update the local state
+        setEmployees(employees.map((emp) => (emp.id === employeeData.id ? employeeData : emp)))
+        showToast("Employee updated successfully")
+      } else {
+        // Add new employee
+        // You would typically make an API call here to create the employee
+        // For now, we'll just update the local state
+        setEmployees([...employees, employeeData])
+        showToast("Employee added successfully")
+      }
+      handleCloseAddModal()
+      handleCloseEditModal()
+    } catch (error) {
+      console.error("Error saving employee:", error)
+      showToast("Failed to save employee", "error")
     }
-    handleCloseModal();
-  };
+  }
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch("http://localhost:8081/users/getAllUser")
+        if (!response.ok) {
+          throw new Error("Failed to fetch employees")
+        }
+        const data = await response.json()
+        
+        setEmployees(data)
+      } catch (error) {
+        console.error("Error fetching employees:", error)
+        showToast("Failed to load employees", "error")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEmployees()
+  }, [])
 
   return (
     <PageLayout title="Employees">
@@ -314,8 +731,8 @@ const EmployeesPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          
-          <button 
+
+          <button
             onClick={handleOpenAddModal}
             className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center transition-colors"
           >
@@ -323,43 +740,98 @@ const EmployeesPage = () => {
             Add Employee
           </button>
         </div>
-        
+
         {/* Employees Table */}
         <div className="overflow-x-auto">
           {/* Table view for medium screens and up */}
           <table className="hidden md:table min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pickup Location</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Drop Location</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift Time</th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  First Name
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Last Name
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Phone
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Gender
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Email
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Pickup Location
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Drop Location
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Shift Time
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredEmployees.length > 0 ? (
+              {loading ? (
+                <tr>
+                  <td colSpan={8} className="px-6 py-4 text-center text-gray-500">
+                    Loading employees...
+                  </td>
+                </tr>
+              ) : filteredEmployees.length > 0 ? (
                 filteredEmployees.map((employee) => (
                   <tr key={employee.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.name}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.phone}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.firstName}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.lastName}</td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.mobileNo}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.gender}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.pickupLocation}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.dropLocation}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">  {employee.pickupLocation ? employee.pickupLocation : "-------"} 
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.dropLocation ? employee.dropLocation:"-------"}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{employee.shiftTime}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-3">
-                        <button 
+                        <button
                           className="text-blue-500 hover:text-blue-600 transition-colors"
                           onClick={() => handleOpenEditModal(employee)}
                         >
                           <FiEdit size={18} />
                         </button>
-                        <button 
+                        <button
                           className="text-red-500 hover:text-red-600 transition-colors"
                           onClick={() => handleDelete(employee.id)}
                         >
@@ -381,20 +853,22 @@ const EmployeesPage = () => {
 
           {/* Card view for mobile */}
           <div className="md:hidden space-y-4">
-            {filteredEmployees.length > 0 ? (
+            {loading ? (
+              <div className="text-center text-gray-500 py-4">Loading employees...</div>
+            ) : filteredEmployees.length > 0 ? (
               filteredEmployees.map((employee) => (
                 <div key={employee.id} className="bg-white rounded-lg p-4 shadow border border-gray-200">
                   <div className="space-y-2">
                     <div className="flex justify-between items-start">
                       <h3 className="text-lg font-medium text-gray-700">{employee.name}</h3>
                       <div className="flex space-x-2">
-                        <button 
+                        <button
                           className="text-blue-500 hover:text-blue-600 transition-colors"
                           onClick={() => handleOpenEditModal(employee)}
                         >
                           <FiEdit size={18} />
                         </button>
-                        <button 
+                        <button
                           className="text-red-500 hover:text-red-600 transition-colors"
                           onClick={() => handleDelete(employee.id)}
                         >
@@ -432,33 +906,31 @@ const EmployeesPage = () => {
                 </div>
               ))
             ) : (
-              <div className="text-center text-gray-500 py-4">
-                No employees found matching your search criteria.
-              </div>
+              <div className="text-center text-gray-500 py-4">No employees found matching your search criteria.</div>
             )}
           </div>
         </div>
 
-        {/* Employee Form Modal */}
-        <EmployeeFormModal 
-          isOpen={isModalOpen} 
-          onClose={handleCloseModal} 
+        {/* Add Employee Modal */}
+        <AddEmployeeForm
+          isOpen={isAddModalOpen}
+          onClose={handleCloseAddModal}
+          onSave={handleSaveEmployee}
+        />
+
+        {/* Edit Employee Modal */}
+        <EditEmployeeForm
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
           onSave={handleSaveEmployee}
           employee={editingEmployee}
-          title={modalTitle}
         />
 
         {/* Toast Notification */}
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={hideToast}
-          />
-        )}
+        {toast && <Toast message={toast.message} type={toast.type} onClose={hideToast} />}
       </div>
     </PageLayout>
-  );
-};
+  )
+}
 
-export default EmployeesPage;
+export default EmployeesPage

@@ -554,27 +554,27 @@ const DriversPage = () => {
 
       {/* View/Edit Driver Modal */}
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto bg-white border border-gray-200 shadow-xl">
           <DialogHeader>
-            <DialogTitle className="flex justify-between items-center">
-              <span className="text-gray-700">{isEditMode ? "Edit Driver" : "Driver Details"}</span>
+            <DialogTitle className="flex justify-between items-center text-gray-800">
+              <span className="text-gray-800">{isEditMode ? "Edit Driver" : "Driver Details"}</span>
               <div className="flex gap-2">
                 {!isEditMode && (
                   <>
                     <Button
-                      className="bg-green-500 hover:bg-green-600 text-white"
+                      className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-2 rounded shadow"
                       onClick={() => handleApprove()}
                     >
                       Approve
                     </Button>
                     <Button
-                      className="bg-red-500 hover:bg-red-600 text-white"
+                      className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded shadow"
                       onClick={() => handleReject()}
                     >
                       Reject
                     </Button>
                     <Button
-                      className="bg-blue-500 hover:bg-blue-600 text-white"
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded shadow"
                       onClick={() => setIsEditMode(true)}
                     >
                       <FiEdit className="mr-2" />
@@ -592,7 +592,7 @@ const DriversPage = () => {
               <div className="space-y-2 text-center">
                 <div className="relative w-32 h-32 mx-auto">
                   <div 
-                    className="w-full h-full rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600 cursor-pointer hover:opacity-90 transition-opacity"
+                    className="w-full h-full rounded-full overflow-hidden border-2 border-gray-200 bg-white shadow"
                     onClick={() => handleImageClick(viewFormData.driverPhoto, 'Driver Photo')}
                   >
                     {viewFormData.driverPhoto ? (
@@ -604,14 +604,14 @@ const DriversPage = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <FiUser className="text-gray-500 dark:text-gray-400 text-4xl" />
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                        <FiUser className="text-gray-400 text-4xl" />
                       </div>
                     )}
                   </div>
                   {isEditMode && (
                     <label className="absolute bottom-0 right-0 cursor-pointer">
-                      <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600">
                         <FiUpload size={16} />
                       </div>
                       <input
@@ -624,70 +624,75 @@ const DriversPage = () => {
                     </label>
                   )}
                 </div>
-                <Label>Driver Photo</Label>
+                <Label className="text-gray-700">Driver Photo</Label>
               </div>
             </div>
 
             {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Driver Name</Label>
+                <Label className="text-gray-700">Driver Name</Label>
                 <Input
                   name="name"
                   value={viewFormData.name}
                   onChange={handleViewFormChange}
                   disabled={!isEditMode}
+                  className="bg-white border border-gray-200 text-gray-800 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Mobile Number</Label>
+                <Label className="text-gray-700">Mobile Number</Label>
                 <Input
                   name="mobile"
                   value={viewFormData.mobile}
                   onChange={handleViewFormChange}
                   disabled={!isEditMode}
+                  className="bg-white border border-gray-200 text-gray-800 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label>Date of Birth</Label>
+                <Label className="text-gray-700">Date of Birth</Label>
                 <Input
                   name="dateOfBirth"
                   type="date"
                   value={viewFormData.dateOfBirth}
                   onChange={handleViewFormChange}
                   disabled={!isEditMode}
+                  className="bg-white border border-gray-200 text-gray-800 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label>License ID No</Label>
+                <Label className="text-gray-700">License ID No</Label>
                 <Input
                   name="licenseNumber"
                   value={viewFormData.licenseNumber}
                   onChange={handleViewFormChange}
                   disabled={!isEditMode}
+                  className="bg-white border border-gray-200 text-gray-800 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label>License Expiry Date</Label>
+                <Label className="text-gray-700">License Expiry Date</Label>
                 <Input
                   name="licenseExpiry"
                   type="date"
                   value={viewFormData.licenseExpiry}
                   onChange={handleViewFormChange}
                   disabled={!isEditMode}
+                  className="bg-white border border-gray-200 text-gray-800 focus:border-blue-500 focus:ring-blue-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label>ID Proof Type</Label>
+                <Label className="text-gray-700">ID Proof Type</Label>
                 <Select 
                   value={viewFormData.idProofType} 
                   onValueChange={(value) => setViewFormData({...viewFormData, idProofType: value})}
                   disabled={!isEditMode}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white border border-gray-200 text-gray-800 focus:border-blue-500 focus:ring-blue-500">
                     <SelectValue placeholder="Select ID Proof" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white border border-gray-200">
                     <SelectItem value="Passport">Passport</SelectItem>
                     <SelectItem value="National ID">National ID</SelectItem>
                     <SelectItem value="Voter ID">Voter ID</SelectItem>
@@ -700,10 +705,10 @@ const DriversPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* License Front Photo */}
               <div className="space-y-2">
-                <Label>License Front Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
+                <Label className="text-gray-700">License Front Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200 bg-white">
                   <div 
-                    className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                    className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     onClick={() => handleImageClick(viewFormData.licenseFrontPhoto, 'License Front')}
                   >
                     {viewFormData.licenseFrontPhoto ? (
@@ -721,7 +726,7 @@ const DriversPage = () => {
                     )}
                     {isEditMode && (
                       <label className="absolute bottom-2 right-2 cursor-pointer">
-                        <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                        <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                           <FiUpload size={16} />
                         </div>
                         <input
@@ -739,10 +744,10 @@ const DriversPage = () => {
 
               {/* License Back Photo */}
               <div className="space-y-2">
-                <Label>License Back Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
+                <Label className="text-gray-700">License Back Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200 bg-white">
                   <div 
-                    className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                    className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     onClick={() => handleImageClick(viewFormData.licenseBackPhoto, 'License Back')}
                   >
                     {viewFormData.licenseBackPhoto ? (
@@ -760,7 +765,7 @@ const DriversPage = () => {
                     )}
                     {isEditMode && (
                       <label className="absolute bottom-2 right-2 cursor-pointer">
-                        <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                        <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                           <FiUpload size={16} />
                         </div>
                         <input
@@ -778,10 +783,10 @@ const DriversPage = () => {
 
               {/* ID Proof Front Photo */}
               <div className="space-y-2">
-                <Label>ID Proof Front Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
+                <Label className="text-gray-700">ID Proof Front Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200 bg-white">
                   <div 
-                    className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                    className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     onClick={() => handleImageClick(viewFormData.idProofFrontPhoto, 'ID Proof Front')}
                   >
                     {viewFormData.idProofFrontPhoto ? (
@@ -799,7 +804,7 @@ const DriversPage = () => {
                     )}
                     {isEditMode && (
                       <label className="absolute bottom-2 right-2 cursor-pointer">
-                        <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                        <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                           <FiUpload size={16} />
                         </div>
                         <input
@@ -817,10 +822,10 @@ const DriversPage = () => {
 
               {/* ID Proof Back Photo */}
               <div className="space-y-2">
-                <Label>ID Proof Back Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
+                <Label className="text-gray-700">ID Proof Back Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200 bg-white">
                   <div 
-                    className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                    className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                     onClick={() => handleImageClick(viewFormData.idProofBackPhoto, 'ID Proof Back')}
                   >
                     {viewFormData.idProofBackPhoto ? (
@@ -838,7 +843,7 @@ const DriversPage = () => {
                     )}
                     {isEditMode && (
                       <label className="absolute bottom-2 right-2 cursor-pointer">
-                        <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                        <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                           <FiUpload size={16} />
                         </div>
                         <input
@@ -856,13 +861,13 @@ const DriversPage = () => {
 
               {/* PCC Form */}
               <div className="space-y-2 md:col-span-2">
-                <Label>PCC Form (Optional)</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
-                  <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+                <Label className="text-gray-700">PCC Form (Optional)</Label>
+                <div className="border rounded-lg p-4 border-gray-200 bg-white">
+                  <div className="relative bg-gray-50 rounded-lg p-4">
                     {viewFormData.pccForm ? (
                       <div className="flex items-center space-x-2">
                         <FiFile className="text-gray-400 text-xl" />
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
+                        <span className="text-sm text-gray-600">
                           {typeof viewFormData.pccForm === 'string' 
                             ? viewFormData.pccForm.split('/').pop() 
                             : viewFormData.pccForm.name}
@@ -875,7 +880,7 @@ const DriversPage = () => {
                     )}
                     {isEditMode && (
                       <label className="absolute bottom-2 right-2 cursor-pointer">
-                        <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                        <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                           <FiUpload size={16} />
                         </div>
                         <input
@@ -897,11 +902,13 @@ const DriversPage = () => {
             <Button variant="outline" onClick={() => {
               setIsViewModalOpen(false)
               setIsEditMode(false)
-            }}>
+            }} className="border-gray-200 text-gray-700 hover:bg-gray-100">
               Close
             </Button>
             {isEditMode && (
-              <Button onClick={handleSaveEdit}>Save Changes</Button>
+              <Button onClick={handleSaveEdit} className="bg-blue-500 hover:bg-blue-600 text-white">
+                Save Changes
+              </Button>
             )}
           </DialogFooter>
         </DialogContent>
@@ -935,113 +942,123 @@ const DriversPage = () => {
 
       {/* Add Driver Modal */}
       <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px] max-h-[80vh] overflow-y-auto bg-white">
           <DialogHeader>
-            <DialogTitle>Add New Driver</DialogTitle>
+            <DialogTitle className="text-xl font-semibold text-gray-800">Add New Driver</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-6 py-4">
-            {/* Driver Photo */}
-            <div className="flex justify-center">
-              <div className="space-y-2 text-center">
-                <div className="relative w-32 h-32 mx-auto">
-                  <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
-                    {addFormData.driverPhoto ? (
-                      <img
-                        src={typeof addFormData.driverPhoto === 'string' 
-                          ? addFormData.driverPhoto 
-                          : URL.createObjectURL(addFormData.driverPhoto)}
-                        alt="Driver"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <FiUser className="text-gray-500 dark:text-gray-400 text-4xl" />
-                      </div>
-                    )}
-                  </div>
-                  <label className="absolute bottom-0 right-0 cursor-pointer">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700">
-                      <FiUpload size={16} />
+            {/* Driver Photo and Basic Information */}
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Driver Photo */}
+              <div className="w-full md:w-1/3">
+                <div className="space-y-2 text-center">
+                  <div className="relative w-32 h-32 mx-auto">
+                    <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-200">
+                      {addFormData.driverPhoto ? (
+                        <img
+                          src={typeof addFormData.driverPhoto === 'string' 
+                            ? addFormData.driverPhoto 
+                            : URL.createObjectURL(addFormData.driverPhoto)}
+                          alt="Driver"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                          <FiUser className="text-gray-400 text-4xl" />
+                        </div>
+                      )}
                     </div>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      name="driverPhoto"
-                      onChange={handleAddInputChange}
-                    />
-                  </label>
+                    <label className="absolute bottom-0 right-0 cursor-pointer">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600">
+                        <FiUpload size={16} />
+                      </div>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        name="driverPhoto"
+                        onChange={handleAddInputChange}
+                      />
+                    </label>
+                  </div>
+                  <Label className="text-gray-700">Driver Photo</Label>
                 </div>
-                <Label>Driver Photo</Label>
               </div>
-            </div>
 
-            {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Driver Name *</Label>
-                <Input
-                  name="name"
-                  value={addFormData.name}
-                  onChange={handleAddInputChange}
-                  placeholder="Enter driver name"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Mobile Number *</Label>
-                <Input
-                  name="mobile"
-                  value={addFormData.mobile}
-                  onChange={handleAddInputChange}
-                  placeholder="Enter mobile number"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Date of Birth</Label>
-                <Input
-                  name="dateOfBirth"
-                  type="date"
-                  value={addFormData.dateOfBirth}
-                  onChange={handleAddInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>License ID No *</Label>
-                <Input
-                  name="licenseNumber"
-                  value={addFormData.licenseNumber}
-                  onChange={handleAddInputChange}
-                  placeholder="Enter license number"
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>License Expiry Date</Label>
-                <Input
-                  name="licenseExpiry"
-                  type="date"
-                  value={addFormData.licenseExpiry}
-                  onChange={handleAddInputChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>ID Proof Type</Label>
-                <Select 
-                  value={addFormData.idProofType} 
-                  onValueChange={(value) => setAddFormData({...addFormData, idProofType: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select ID Proof" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Passport">Passport</SelectItem>
-                    <SelectItem value="National ID">National ID</SelectItem>
-                    <SelectItem value="Voter ID">Voter ID</SelectItem>
-                  </SelectContent>
-                </Select>
+              {/* Basic Information */}
+              <div className="w-full md:w-2/3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-gray-700">Driver Name *</Label>
+                    <Input
+                      name="name"
+                      value={addFormData.name}
+                      onChange={handleAddInputChange}
+                      placeholder="Enter driver name"
+                      required
+                      className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-gray-700">Mobile Number *</Label>
+                    <Input
+                      name="mobile"
+                      value={addFormData.mobile}
+                      onChange={handleAddInputChange}
+                      placeholder="Enter mobile number"
+                      required
+                      className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-gray-700">Date of Birth</Label>
+                    <Input
+                      name="dateOfBirth"
+                      type="date"
+                      value={addFormData.dateOfBirth}
+                      onChange={handleAddInputChange}
+                      className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-gray-700">License ID No *</Label>
+                    <Input
+                      name="licenseNumber"
+                      value={addFormData.licenseNumber}
+                      onChange={handleAddInputChange}
+                      placeholder="Enter license number"
+                      required
+                      className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-gray-700">License Expiry Date</Label>
+                    <Input
+                      name="licenseExpiry"
+                      type="date"
+                      value={addFormData.licenseExpiry}
+                      onChange={handleAddInputChange}
+                      className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-gray-700">ID Proof Type</Label>
+                    <Select 
+                      value={addFormData.idProofType} 
+                      onValueChange={(value) => setAddFormData({...addFormData, idProofType: value})}
+                    >
+                      <SelectTrigger className="bg-white border-gray-200 focus:border-blue-500 focus:ring-blue-500">
+                        <SelectValue placeholder="Select ID Proof" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border-gray-200">
+                        <SelectItem value="Passport">Passport</SelectItem>
+                        <SelectItem value="National ID">National ID</SelectItem>
+                        <SelectItem value="Voter ID">Voter ID</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1049,9 +1066,9 @@ const DriversPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* License Front Photo */}
               <div className="space-y-2">
-                <Label>License Front Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
-                  <div className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                <Label className="text-gray-700">License Front Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200">
+                  <div className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden">
                     {addFormData.licenseFrontPhoto ? (
                       <img
                         src={typeof addFormData.licenseFrontPhoto === 'string' 
@@ -1066,7 +1083,7 @@ const DriversPage = () => {
                       </div>
                     )}
                     <label className="absolute bottom-2 right-2 cursor-pointer">
-                      <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                      <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                         <FiUpload size={16} />
                       </div>
                       <input
@@ -1083,9 +1100,9 @@ const DriversPage = () => {
 
               {/* License Back Photo */}
               <div className="space-y-2">
-                <Label>License Back Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
-                  <div className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                <Label className="text-gray-700">License Back Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200">
+                  <div className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden">
                     {addFormData.licenseBackPhoto ? (
                       <img
                         src={typeof addFormData.licenseBackPhoto === 'string' 
@@ -1100,7 +1117,7 @@ const DriversPage = () => {
                       </div>
                     )}
                     <label className="absolute bottom-2 right-2 cursor-pointer">
-                      <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                      <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                         <FiUpload size={16} />
                       </div>
                       <input
@@ -1117,9 +1134,9 @@ const DriversPage = () => {
 
               {/* ID Proof Front Photo */}
               <div className="space-y-2">
-                <Label>ID Proof Front Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
-                  <div className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                <Label className="text-gray-700">ID Proof Front Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200">
+                  <div className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden">
                     {addFormData.idProofFrontPhoto ? (
                       <img
                         src={typeof addFormData.idProofFrontPhoto === 'string' 
@@ -1134,7 +1151,7 @@ const DriversPage = () => {
                       </div>
                     )}
                     <label className="absolute bottom-2 right-2 cursor-pointer">
-                      <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                      <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                         <FiUpload size={16} />
                       </div>
                       <input
@@ -1151,9 +1168,9 @@ const DriversPage = () => {
 
               {/* ID Proof Back Photo */}
               <div className="space-y-2">
-                <Label>ID Proof Back Photo</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
-                  <div className="aspect-video relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                <Label className="text-gray-700">ID Proof Back Photo</Label>
+                <div className="border rounded-lg p-4 border-gray-200">
+                  <div className="aspect-video relative bg-gray-50 rounded-lg overflow-hidden">
                     {addFormData.idProofBackPhoto ? (
                       <img
                         src={typeof addFormData.idProofBackPhoto === 'string' 
@@ -1168,7 +1185,7 @@ const DriversPage = () => {
                       </div>
                     )}
                     <label className="absolute bottom-2 right-2 cursor-pointer">
-                      <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                      <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                         <FiUpload size={16} />
                       </div>
                       <input
@@ -1185,13 +1202,13 @@ const DriversPage = () => {
 
               {/* PCC Form */}
               <div className="space-y-2 md:col-span-2">
-                <Label>PCC Form (Optional)</Label>
-                <div className="border rounded-lg p-4 dark:border-gray-600">
-                  <div className="relative bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+                <Label className="text-gray-700">PCC Form (Optional)</Label>
+                <div className="border rounded-lg p-4 border-gray-200">
+                  <div className="relative bg-gray-50 rounded-lg p-4">
                     {addFormData.pccForm ? (
                       <div className="flex items-center space-x-2">
                         <FiFile className="text-gray-400 text-xl" />
-                        <span className="text-sm text-gray-600 dark:text-gray-300">
+                        <span className="text-sm text-gray-600">
                           {typeof addFormData.pccForm === 'string' 
                             ? addFormData.pccForm.split('/').pop() 
                             : addFormData.pccForm.name}
@@ -1203,7 +1220,7 @@ const DriversPage = () => {
                       </div>
                     )}
                     <label className="absolute bottom-2 right-2 cursor-pointer">
-                      <div className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                      <div className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600">
                         <FiUpload size={16} />
                       </div>
                       <input
@@ -1221,10 +1238,19 @@ const DriversPage = () => {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsAddModalOpen(false)}
+              className="border-gray-200 text-gray-700 hover:bg-gray-100"
+            >
               Cancel
             </Button>
-            <Button onClick={handleAddDriver}>Add Driver</Button>
+            <Button 
+              onClick={handleAddDriver}
+              className="bg-blue-500 hover:bg-blue-600 text-white"
+            >
+              Add Driver
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
